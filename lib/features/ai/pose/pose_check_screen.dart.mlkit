@@ -1,0 +1,560 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart';
+
+import '../../../core/locale/locale_provider.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/app_card.dart';
+import '../../../core/widgets/primary_button.dart';
+import '../tts/voice_coach.dart';
+import 'pose_analyzer.dart';
+
+/// AI · Kamerada mashqni tekshirish — Google ML Kit Pose (telefonda, bepul, internetsiz).
+/// Old kamera → skelet → takrorlarni sanash → ovozli hisob va maslahat.
+/// Natija: `Navigator.pop(context, reps)`.
+class PoseCheckScreen extends ConsumerStatefulWidget {
+  const PoseCheckScreen({
+    super.key,
+    required this.exerciseName,
+    required this.exercise,
+    required this.targetReps,
+  });
+
+  final String exerciseName;
+  final TrackedExercise exercise;
+  final int targetReps;
+
+  @override
+  ConsumerState<PoseCheckScreen> createState() => _PoseCheckScreenState();
+}
+
+class _PoseCheckScreenState extends ConsumerState<PoseCheckScreen> {
+  CameraController? _controller;
+  CameraDescription? _camera;
+  // "Accurate" model: bo'g'imlarni aniqroq topadi — yarim takror o'tib ketmaydi.
+  // Sekinroq, lekin kadrlar baribir ~15/s bilan tahlil qilinadi.
+  final _detector = PoseDetector(
+    options: PoseDetectorOptions(model: PoseDetectionModel.accurate),
+  );
+  late final _tracker = widget.exercise.tracker();
+  final _clock = Stopwatch()..start();
+
+  bool _busy = false;
+
+  /// Tahlillar orasidagi eng kam vaqt (~15 kadr/s): sanash uchun yetarli,
+  /// protsessor va batareyani esa ikki baravar kam sarflaydi.
+  static const _minFrameGap = Duration(milliseconds: 66);
+  Duration _lastFrame = -_minFrameGap;
+  String? _error;
+  Pose? _pose;
+  Size? _imageSize;
+  InputImageRotation _rotation = InputImageRotation.rotation0deg;
+  FormHint? _shownHint;
+  DateTime _lastHintSpoken = DateTime(2000);
+
+  static const _orientations = {
+    DeviceOrientation.portraitUp: 0,
+    DeviceOrientation.landscapeLeft: 90,
+    DeviceOrientation.portraitDown: 180,
+    DeviceOrientation.landscapeRight: 270,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _start();
+  }
+
+  Future<void> _start() async {
+    final locale = Localizations.localeOf(context);
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) throw CameraException('NoCamera', null);
+      _camera = cameras.firstWhere(
+        (c) => c.lensDirection == CameraLensDirection.front,
+        orElse: () => cameras.first,
+      );
+      final controller = CameraController(
+        _camera!,
+        ResolutionPreset.medium,
+        enableAudio: false,
+        imageFormatGroup: Platform.isAndroid
+            ? ImageFormatGroup.nv21
+            : ImageFormatGroup.bgra8888,
+      );
+      // Kamera boshqa ilovada band bo'lsa, cheksiz aylanib turmasin.
+      await controller.initialize().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => throw CameraException('Timeout', null),
+      );
+      if (!mounted) return controller.dispose();
+      await controller.startImageStream(_process);
+      setState(() => _controller = controller);
+      await ref.read(voiceCoachProvider).setLocale(locale);
+    } on CameraException catch (e) {
+      debugPrint('PoseCheck: ${e.code} ${e.description}');
+      if (mounted) setState(() => _error = e.code);
+    }
+  }
+
+  @override
+  void dispose() {
+    final c = _controller;
+    _controller = null;
+    c?.stopImageStream().catchError((_) {}).whenComplete(c.dispose);
+    _detector.close();
+    super.dispose();
+  }
+
+  Future<void> _process(CameraImage image) async {
+    if (_busy) return;
+    final now = _clock.elapsed;
+    if (now - _lastFrame < _minFrameGap) return;
+    _lastFrame = now;
+    final input = _toInputImage(image);
+    if (input == null) return;
+    _busy = true;
+    try {
+      final poses = await _detector.processImage(input);
+      if (!mounted) return;
+      final pose = poses.isEmpty ? null : poses.first;
+      if (pose != null) _analyze(pose);
+      setState(() {
+        _pose = pose;
+        _imageSize = Size(image.width.toDouble(), image.height.toDouble());
+      });
+    } catch (e) {
+      debugPrint('PoseCheck: $e');
+    } finally {
+      _busy = false;
+    }
+  }
+
+  void _analyze(Pose pose) {
+    final head = _tracker.needsHead ? _headFrom(pose) : null;
+    final body = _tracker.needsHead ? null : _frameFrom(pose);
+    if (head == null && body == null) return;
+    final l10n = context.l10n;
+    final voice = ref.read(voiceEnabledProvider);
+    final coach = ref.read(voiceCoachProvider);
+
+    if (_tracker.update(body: body, head: head, t: _clock.elapsed)) {
+      final n = _tracker.count;
+      final reached = n == widget.targetReps;
+      // Planka: har soniyani emas, har 5 soniyani aytadi.
+      final speak = widget.exercise.kind != TrackKind.hold || n % 5 == 0;
+      if (speak || reached) HapticFeedback.lightImpact();
+      if (voice && speak) coach.say('$n');
+      if (reached && voice) {
+        Future.delayed(
+          const Duration(milliseconds: 600),
+          () => coach.say(l10n.ttsGreatJob),
+        );
+      }
+    }
+
+    final hint = _tracker.lastHint;
+    if (hint != null && hint != FormHint.good && hint != _shownHint) {
+      final now = DateTime.now();
+      if (voice && now.difference(_lastHintSpoken).inSeconds >= 3) {
+        _lastHintSpoken = now;
+        coach.say(_hintText(hint));
+      }
+    }
+    _shownHint = hint;
+  }
+
+  /// Bo'yin mashqlari: burun va ikkala yelka (kameraga yuzma-yuz).
+  HeadFrame? _headFrom(Pose pose) {
+    final n = pose.landmarks[PoseLandmarkType.nose];
+    final l = pose.landmarks[PoseLandmarkType.leftShoulder];
+    final r = pose.landmarks[PoseLandmarkType.rightShoulder];
+    if ([n, l, r].any((e) => e == null || e.likelihood < 0.5)) return null;
+    return HeadFrame(
+      nose: (x: n!.x, y: n.y),
+      leftShoulder: (x: l!.x, y: l.y),
+      rightShoulder: (x: r!.x, y: r.y),
+    );
+  }
+
+  /// Ishonchliroq ko'ringan tomonni (chap/o'ng) tanlab, kerakli bo'g'imlarni oladi.
+  BodyFrame? _frameFrom(Pose pose) {
+    // Ixtiyoriy nuqta: ishonchli ko'rinsa olinadi, aks holda `null`.
+    P? optional(PoseLandmarkType type) {
+      final l = pose.landmarks[type];
+      return l == null || l.likelihood < 0.5 ? null : (x: l.x, y: l.y);
+    }
+
+    BodyFrame? side(List<PoseLandmarkType> t, PoseLandmarkType foot) {
+      final l = [for (final type in t) pose.landmarks[type]];
+      if (l.any((e) => e == null || e.likelihood < 0.5)) return null;
+      P p(int i) => (x: l[i]!.x, y: l[i]!.y);
+      return BodyFrame(
+        shoulder: p(0),
+        elbow: p(1),
+        wrist: p(2),
+        hip: p(3),
+        knee: p(4),
+        ankle: p(5),
+        nose: optional(PoseLandmarkType.nose),
+        foot: optional(foot),
+      );
+    }
+
+    double score(List<PoseLandmarkType> t) =>
+        t.fold(0.0, (s, type) => s + (pose.landmarks[type]?.likelihood ?? 0));
+
+    const left = [
+      PoseLandmarkType.leftShoulder,
+      PoseLandmarkType.leftElbow,
+      PoseLandmarkType.leftWrist,
+      PoseLandmarkType.leftHip,
+      PoseLandmarkType.leftKnee,
+      PoseLandmarkType.leftAnkle,
+    ];
+    const right = [
+      PoseLandmarkType.rightShoulder,
+      PoseLandmarkType.rightElbow,
+      PoseLandmarkType.rightWrist,
+      PoseLandmarkType.rightHip,
+      PoseLandmarkType.rightKnee,
+      PoseLandmarkType.rightAnkle,
+    ];
+    return score(left) >= score(right)
+        ? side(left, PoseLandmarkType.leftFootIndex)
+        : side(right, PoseLandmarkType.rightFootIndex);
+  }
+
+  InputImage? _toInputImage(CameraImage image) {
+    final camera = _camera;
+    final controller = _controller;
+    if (camera == null || controller == null) return null;
+
+    final sensor = camera.sensorOrientation;
+    InputImageRotation? rotation;
+    if (Platform.isIOS) {
+      rotation = InputImageRotationValue.fromRawValue(sensor);
+    } else {
+      var comp = _orientations[controller.value.deviceOrientation];
+      if (comp == null) return null;
+      comp = camera.lensDirection == CameraLensDirection.front
+          ? (sensor + comp) % 360
+          : (sensor - comp + 360) % 360;
+      rotation = InputImageRotationValue.fromRawValue(comp);
+    }
+    if (rotation == null) return null;
+    _rotation = rotation;
+
+    final format = InputImageFormatValue.fromRawValue(image.format.raw);
+    if (format == null ||
+        (Platform.isAndroid && format != InputImageFormat.nv21) ||
+        (Platform.isIOS && format != InputImageFormat.bgra8888) ||
+        image.planes.length != 1) {
+      return null;
+    }
+    final plane = image.planes.first;
+    return InputImage.fromBytes(
+      bytes: plane.bytes,
+      metadata: InputImageMetadata(
+        size: Size(image.width.toDouble(), image.height.toDouble()),
+        rotation: rotation,
+        format: format,
+        bytesPerRow: plane.bytesPerRow,
+      ),
+    );
+  }
+
+  String _hintText(FormHint h) => switch (h) {
+    FormHint.goLower => context.l10n.hintGoLower,
+    FormHint.keepBodyStraight => context.l10n.hintKeepStraight,
+    FormHint.getInPosition => context.l10n.hintGetInPlank,
+    FormHint.bendForward => context.l10n.hintBendForward,
+    FormHint.keepLegsStraight => context.l10n.hintKeepLegsStraight,
+    FormHint.biggerCircles => context.l10n.hintBiggerCircles,
+    FormHint.good => context.l10n.hintGood,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final controller = _controller;
+    final done = _tracker.count >= widget.targetReps;
+    final unit = switch (widget.exercise.kind) {
+      TrackKind.reps => l10n.repsLabel,
+      TrackKind.hold => l10n.secondsLabel,
+      TrackKind.circles => l10n.circlesLabel,
+    };
+
+    return Scaffold(
+      backgroundColor: AppColors.black,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (_error != null)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.xl),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.no_photography_rounded,
+                      size: 64,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      l10n.cameraUnavailable,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodySecondary,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else if (controller == null || !controller.value.isInitialized)
+            const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            )
+          else
+            Center(
+              child: AspectRatio(
+                aspectRatio: 1 / controller.value.aspectRatio,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CameraPreview(controller),
+                    if (_pose != null && _imageSize != null)
+                      CustomPaint(
+                        painter: _PosePainter(
+                          pose: _pose!,
+                          imageSize: _imageSize!,
+                          rotation: _rotation,
+                          lens: _camera!.lensDirection,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          // Yuqori panel — tepaga yopishgan, ostida qorong'i gradient (yorug' rasmda ham o'qiladi).
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xCC000000), Color(0x00000000)],
+                ),
+              ),
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child: Row(
+                    children: [
+                      CircleIconButton(
+                        icon: Icons.close_rounded,
+                        background: AppColors.black.withValues(alpha: 0.5),
+                        onTap: () => Navigator.pop(context, _tracker.count),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.aiFormCheck.toUpperCase(),
+                              style: AppTextStyles.overline.copyWith(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            Text(widget.exerciseName, style: AppTextStyles.h3),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Pastki panel: hisob + maslahat
+          Positioned(
+            left: AppSpacing.lg,
+            right: AppSpacing.lg,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_pose == null && _error == null && controller != null)
+                      _Badge(
+                        text: _tracker.needsHead
+                            ? l10n.stepIntoFrameHead
+                            : widget.exercise.frontView
+                            ? l10n.placePhoneFront
+                            : l10n.placePhoneSide,
+                        color: AppColors.surfaceLight,
+                      ),
+                    if (_shownHint != null && _shownHint != FormHint.good)
+                      _Badge(
+                        text: _hintText(_shownHint!),
+                        color: AppColors.orange,
+                      ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Text.rich(
+                      TextSpan(
+                        text: '${_tracker.count}',
+                        style: AppTextStyles.display.copyWith(
+                          fontSize: 96,
+                          color: AppColors.primary,
+                          height: 1,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: ' / ${widget.targetReps}',
+                            style: AppTextStyles.h2.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(unit, style: AppTextStyles.title),
+                    const SizedBox(height: AppSpacing.md),
+                    PrimaryButton(
+                      label: done ? l10n.next : l10n.finish,
+                      expanded: true,
+                      variant: done
+                          ? ButtonVariant.primary
+                          : ButtonVariant.secondary,
+                      onPressed: () => Navigator.pop(context, _tracker.count),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge({required this.text, required this.color});
+
+  final String text;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+      ),
+      child: Text(
+        text,
+        style: AppTextStyles.title.copyWith(
+          color: color == AppColors.orange
+              ? AppColors.textOnPrimary
+              : AppColors.textPrimary,
+        ),
+      ),
+    );
+  }
+}
+
+/// Skeletni kamera tasviri ustiga chizadi (ML Kit koordinatalari → ekran).
+class _PosePainter extends CustomPainter {
+  _PosePainter({
+    required this.pose,
+    required this.imageSize,
+    required this.rotation,
+    required this.lens,
+  });
+
+  final Pose pose;
+  final Size imageSize;
+  final InputImageRotation rotation;
+  final CameraLensDirection lens;
+
+  static const _bones = [
+    (PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder),
+    (PoseLandmarkType.leftShoulder, PoseLandmarkType.leftElbow),
+    (PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist),
+    (PoseLandmarkType.rightShoulder, PoseLandmarkType.rightElbow),
+    (PoseLandmarkType.rightElbow, PoseLandmarkType.rightWrist),
+    (PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip),
+    (PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip),
+    (PoseLandmarkType.leftHip, PoseLandmarkType.rightHip),
+    (PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee),
+    (PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle),
+    (PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee),
+    (PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle),
+  ];
+
+  Offset _map(PoseLandmark l, Size canvas) {
+    final rotated =
+        rotation == InputImageRotation.rotation90deg ||
+        rotation == InputImageRotation.rotation270deg;
+    // Android'da 90/270 burilishda rasmning eni va bo'yi almashadi.
+    final w = rotated && !Platform.isIOS ? imageSize.height : imageSize.width;
+    final h = rotated && !Platform.isIOS ? imageSize.width : imageSize.height;
+    var x = l.x * canvas.width / w;
+    final y = l.y * canvas.height / h;
+    final mirror = switch (rotation) {
+      InputImageRotation.rotation270deg => true,
+      InputImageRotation.rotation90deg => false,
+      _ => lens == CameraLensDirection.front,
+    };
+    if (mirror) {
+      x = canvas.width - x;
+    }
+    return Offset(x, y);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final line = Paint()
+      ..color = AppColors.primary
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+    final dot = Paint()..color = AppColors.white;
+
+    for (final (a, b) in _bones) {
+      final la = pose.landmarks[a];
+      final lb = pose.landmarks[b];
+      if (la == null ||
+          lb == null ||
+          la.likelihood < 0.5 ||
+          lb.likelihood < 0.5) {
+        continue;
+      }
+      canvas.drawLine(_map(la, size), _map(lb, size), line);
+    }
+    for (final l in pose.landmarks.values) {
+      if (l.likelihood < 0.5) continue;
+      canvas.drawCircle(_map(l, size), 5, dot);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_PosePainter old) => old.pose != pose;
+}

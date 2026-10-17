@@ -1,0 +1,889 @@
+{
+  "@@locale": "en",
+  "appName": "FitBody",
+  "next": "Next",
+  "skip": "Skip",
+  "getStarted": "Get Started",
+  "continueBtn": "Continue",
+  "start": "Start",
+  "language": "Language",
+  "comingSoon": "Coming soon",
+  "onboarding1Title": "Start your journey towards a more active lifestyle",
+  "onboarding2Title": "Find nutrition tips that fit your lifestyle",
+  "onboarding3Title": "A community for you, challenge yourself",
+  "onboardingWelcome": "Welcome to",
+  "welcome": "Welcome",
+  "loginSubtitle": "Log in to continue your fitness journey",
+  "createAccount": "Create Account",
+  "signupSubtitle": "Let's start your journey",
+  "logIn": "Log In",
+  "signUp": "Sign Up",
+  "fullName": "Full name",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "forgotPassword": "Forgot password?",
+  "orSignUpWith": "or sign up with",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "forgotPasswordSubtitle": "Enter your email and we will send you a code to reset your password",
+  "sendCode": "Send code",
+  "codeSent": "Code sent to your email",
+  "fieldRequired": "Required field",
+  "invalidEmail": "Invalid email",
+  "passwordTooShort": "Minimum 6 characters",
+  "passwordsDontMatch": "Passwords don't match",
+  "setupTitle": "Consistency is the key to progress. Don't give up!",
+  "setupSubtitle": "Tell us a bit about yourself so we can build a plan just for you.",
+  "genderTitle": "What's your gender",
+  "male": "Male",
+  "female": "Female",
+  "ageTitle": "How old are you?",
+  "weightTitle": "What is your weight?",
+  "heightTitle": "What is your height?",
+  "kg": "kg",
+  "cm": "cm",
+  "goalTitle": "What is your goal?",
+  "goalLoseWeight": "Lose weight",
+  "goalGainWeight": "Gain weight",
+  "goalMuscleMass": "Muscle mass gain",
+  "goalShapeBody": "Shape body",
+  "goalOthers": "Others",
+  "activityTitle": "Physical activity level",
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+  "profileTitle": "Fill your profile",
+  "nickname": "Nickname",
+  "mobileNumber": "Mobile number",
+  "hiUser": "Hi, {name}",
+  "@hiUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSubtitle": "It's time to challenge your limits.",
+  "tabHome": "Home",
+  "tabResources": "Articles",
+  "tabFavorites": "Favorites",
+  "tabSupport": "Support",
+  "tabShop": "Shop",
+  "tabSubscription": "Subscription",
+  "tabNews": "News",
+  "tabProfile": "Profile",
+  "workout": "Workout",
+  "progress": "Statistics",
+  "nutrition": "Nutrition",
+  "community": "Community",
+  "recommendations": "Recommendations",
+  "seeAll": "See all",
+  "weeklyChallenge": "Weekly Challenge",
+  "articlesTips": "Articles & Tips",
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kcal": "{count} kcal",
+  "@kcal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myRoutines": "My routines",
+  "noRoutinesYet": "No routines yet",
+  "makeYourOwnRoutine": "Make your own routine",
+  "exercisesCount": "{count, plural, =1{1 exercise} other{{count} exercises}}",
+  "@exercisesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "setsReps": "{sets} × {reps}",
+  "@setsReps": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  },
+  "setsSeconds": "{sets} × {seconds}s",
+  "@setsSeconds": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "startWorkout": "Start workout",
+  "notFound": "Not found",
+  "routineName": "Routine name",
+  "chooseExercises": "Choose exercises",
+  "saveRoutine": "Save",
+  "routineSaved": "Routine saved",
+  "routineIncomplete": "Enter a name and choose at least one exercise",
+  "workoutLog": "Workout Log",
+  "progressCharts": "Progress Charts",
+  "workoutsLabel": "workouts",
+  "minutesLabel": "minutes",
+  "kcalLabel": "kcal",
+  "weightProgress": "Weight",
+  "caloriesBurned": "Calories burned (7 days)",
+  "mealPlans": "Meal Plans",
+  "mealIdeas": "Meal Ideas",
+  "breakfast": "Breakfast",
+  "lunch": "Lunch",
+  "dinner": "Dinner",
+  "todaysPlan": "Today's plan",
+  "generateWithAi": "Generate plan with AI",
+  "protein": "Protein",
+  "carbs": "Carbs",
+  "fat": "Fat",
+  "ingredients": "Ingredients",
+  "discussionForum": "Discussion forum",
+  "challengesCompetitions": "Challenges & competitions",
+  "writePostHint": "Share something with the community…",
+  "publish": "Publish",
+  "repliesCount": "{count, plural, =1{1 reply} other{{count} replies}}",
+  "@repliesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "participantsCount": "{count, plural, =1{1 participant} other{{count} participants}}",
+  "@participantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "join": "Join",
+  "joined": "Joined",
+  "welcomeHeadline": "Let's get to know you",
+  "welcomeHighlight": "better",
+  "welcomeSubtitle": "Get your personalized workout and meal plan in just 1 minute to help achieve your fitness goals.",
+  "signIn": "Sign in",
+  "getReady": "Get ready",
+  "readyUser": "Ready, {name}?",
+  "@readyUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "search": "Search",
+  "steps": "Steps",
+  "dailyProgram": "Daily Program",
+  "minRead": "{count} min read",
+  "@minRead": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "browse": "Browse",
+  "sorting": "Sorting",
+  "about": "About",
+  "routineAbout": "{count} exercises, about {minutes} minutes. Follow the timer and the voice guide — you can pause at any time.",
+  "@routineAbout": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "level": "Level",
+  "exercisesLabel": "Exercises",
+  "focusArea": "Focus area",
+  "fullBody": "Full body",
+  "voiceGuide": "Voice guide",
+  "secondsLabel": "seconds",
+  "repsLabel": "reps",
+  "setOf": "{count} sets",
+  "@setOf": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "previous": "Previous",
+  "finish": "Finish",
+  "congratulation": "Congratulations!",
+  "workoutCompleted": "You have completed “{title}”. Great job, keep it up!",
+  "@workoutCompleted": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "close": "Close",
+  "calories": "Calories",
+  "today": "Today",
+  "ofKcal": "of {count} kcal",
+  "@ofKcal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyMeal": "Daily meal",
+  "editPlan": "Edit plan",
+  "customizePlanHint": "It's time to customize your meal plan and recipes.",
+  "workoutVideos": "Workout Videos",
+  "all": "All",
+  "video": "Video",
+  "article": "Article",
+  "noFavorites": "Nothing here yet — tap ♡ to save",
+  "helpCenter": "Help Center",
+  "onlineSupport": "Online Support",
+  "faq1Q": "How is my workout plan created?",
+  "faq1A": "Your plan is based on your goal, level and body data from the setup. You can change them any time in Edit Profile.",
+  "faq2Q": "Can I use the app without equipment?",
+  "faq2A": "Yes. Most routines are bodyweight only; equipment is listed in the routine details.",
+  "faq3Q": "How do I change the language?",
+  "faq3A": "Tap the globe icon at the top or open Profile → Settings → Language.",
+  "faq4Q": "Is my data safe?",
+  "faq4A": "Your data is stored securely and is never shared with third parties without your consent.",
+  "supportGreeting": "Hi! 👋 I'm your FitBody assistant. Ask me anything about workouts or nutrition.",
+  "supportAutoReply": "Thanks! The AI coach is coming soon — for now our team will answer you here shortly.",
+  "typeMessage": "Type a message…",
+  "logOutConfirm": "Are you sure you want to log out?",
+  "cancel": "Cancel",
+  "logOut": "Log Out",
+  "editProfile": "Edit Profile",
+  "notifications": "Notifications",
+  "settings": "Settings",
+  "help": "Help",
+  "profile": "My Profile",
+  "ageLabel": "Age",
+  "heightLabel": "Height",
+  "saved": "Saved",
+  "workoutReminders": "Workout Reminders",
+  "systemNotifications": "System",
+  "notifReminder1": "Time for your morning stretch — 10 minutes is enough!",
+  "notifReminder2": "Drink a glass of water 💧",
+  "notifReminder3": "Evening walk: 3,000 steps left to reach your goal.",
+  "notifSystem1": "New weekly challenge: Plank With Hip Twist",
+  "notifSystem2": "App updated: new voice guide for workouts",
+  "searchHint": "Workouts, meals…",
+  "noResults": "Nothing found",
+  "ttsExerciseReps": "{name}. {count} reps.",
+  "@ttsExerciseReps": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ttsExerciseTimed": "{name}. {count} seconds.",
+  "@ttsExerciseTimed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ttsFinished": "Workout complete. Great job!",
+  "ttsGreatJob": "Great job! Target reached.",
+  "aiFormCheck": "AI form check",
+  "cameraUnavailable": "Camera is not available. Allow camera access in the phone settings and try again.",
+  "stepIntoFrame": "Step back so your whole body is in the frame",
+  "hintGoLower": "Go lower",
+  "hintKeepStraight": "Keep your body straight",
+  "hintGood": "Good form!",
+  "profilePhoto": "Profile photo",
+  "takePhoto": "Take a photo",
+  "chooseFromGallery": "Choose from gallery",
+  "removePhoto": "Remove photo",
+  "weeklyGoal": "weekly goal",
+  "kcalThisWeek": "kcal burned this week",
+  "workoutsCount": "{count, plural, =1{1 workout} other{{count} workouts}}",
+  "@workoutsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "streakDays": "{count, plural, =0{No streak yet} =1{1 day streak} other{{count} day streak}}",
+  "@streakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyCalories": "Daily calories",
+  "avgPerActiveDay": "avg {count} kcal per active day",
+  "@avgPerActiveDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyGoalLabel": "goal",
+  "activityCalendar": "Activity",
+  "activeDaysOf": "{count} active days of {total}",
+  "@activeDaysOf": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "less": "Less",
+  "more": "More",
+  "weeklyActivity": "Weekly activity",
+  "minutesPerWeek": "minutes of training per week",
+  "thisWeekShort": "now",
+  "sinceDate": "since {date}",
+  "@sinceDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "addWeightHint": "Add your weight regularly to see the trend.",
+  "addWeight": "Add weight",
+  "byLevel": "By level",
+  "totalWorkouts": "workouts in total",
+  "totalKcal": "kcal in total",
+  "noWorkoutsYet": "No workouts yet. Finish your first workout and it will appear here.",
+  "startFirstWorkout": "Start a workout",
+  "yesterday": "Yesterday",
+  "thisWeek": "This week",
+  "streakLabel": "day streak",
+  "clearData": "Clear statistics",
+  "clearDataHint": "Workout log and weight history (incl. test data)",
+  "clearDataConfirm": "All workouts and weight history will be deleted. This cannot be undone.",
+  "dataCleared": "Statistics cleared",
+  "aiFoodScan": "AI food scan",
+  "whatAreYouEating": "What are you eating?",
+  "placeFoodInFrame": "Place the food inside the frame",
+  "gallery": "Gallery",
+  "manualEntry": "Manual",
+  "aiAnalyzing": "AI is analyzing your food",
+  "demoResult": "Demo result — AI server not connected yet",
+  "aiConfidence": "AI confidence {count}%",
+  "@aiConfidence": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "portion": "Portion",
+  "retake": "Retake",
+  "addToDiary": "Add to diary",
+  "foodAdded": "Added: {count} kcal",
+  "@foodAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "snack": "Snack",
+  "foodName": "Food name",
+  "eatenToday": "Eaten today",
+  "addFood": "Add",
+  "noFoodToday": "Nothing logged yet today. Tap + and point the camera at your meal.",
+  "activityRun": "Running",
+  "activityWalk": "Walking",
+  "activityBike": "Cycling",
+  "runMode": "Run mode",
+  "gpsSearching": "Searching for GPS…",
+  "gpsReady": "GPS ready · ±{count} m",
+  "@gpsReady": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gpsOff": "Location is turned off",
+  "locationDenied": "No location permission",
+  "openSettings": "Open settings",
+  "runHint": "Calories are counted in real time from your speed and weight.",
+  "runNotificationTitle": "Workout in progress",
+  "runNotificationText": "Tracking distance and calories",
+  "ttsRunStart": "Go!",
+  "ttsRunDone": "Workout finished. {distance} kilometres, {kcal} calories.",
+  "@ttsRunDone": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      },
+      "kcal": {
+        "type": "int"
+      }
+    }
+  },
+  "ttsRunKm": "{km} kilometres. Average pace {pace}. {kcal} calories.",
+  "@ttsRunKm": {
+    "placeholders": {
+      "km": {
+        "type": "int"
+      },
+      "pace": {
+        "type": "String"
+      },
+      "kcal": {
+        "type": "int"
+      }
+    }
+  },
+  "runLogTitle": "{activity} · {distance} km",
+  "@runLogTitle": {
+    "placeholders": {
+      "activity": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "live": "Live",
+  "paused": "Paused",
+  "resume": "Resume",
+  "pause": "Pause",
+  "holdToStop": "Hold to stop",
+  "kcalBurned": "kcal burned",
+  "km": "km",
+  "minPerKm": "/km",
+  "kmh": "km/h",
+  "distance": "Distance",
+  "pace": "Pace",
+  "speed": "Speed",
+  "runSummary": "Great job!",
+  "duration": "Time",
+  "avgPace": "Avg pace",
+  "splits": "Splits",
+  "kmSplit": "{count} km",
+  "@kmSplit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "discard": "Discard",
+  "eatenLabel": "eaten",
+  "burnedLabel": "burned",
+  "remainingLabel": "left",
+  "overLabel": "over",
+  "runCardSubtitle": "GPS · real-time calories · tap to start",
+  "friend": "Friend",
+  "you": "You",
+  "macrosShort": "P {protein} · C {carbs} · F {fat}",
+  "@macrosShort": {
+    "placeholders": {
+      "protein": {
+        "type": "int"
+      },
+      "carbs": {
+        "type": "int"
+      },
+      "fat": {
+        "type": "int"
+      }
+    }
+  },
+  "todaysWorkout": "Today's workout",
+  "devicesTitle": "Watch & devices",
+  "devicesSubtitle": "Steps, heart rate, sleep and calories from your watch — via Health Connect.",
+  "devicesSettingsHint": "Galaxy Watch, Mi Band, Garmin, Apple Watch…",
+  "connectYourWatch": "Connect your watch",
+  "watchConnected": "Watch connected",
+  "connectWatch": "Connect",
+  "healthWhatWeRead": "What the app will read:",
+  "heartRate": "Heart rate",
+  "restingHeartRate": "Resting pulse",
+  "sleep": "Sleep",
+  "activeCalories": "Active calories",
+  "healthReadOnly": "Read only. The app never changes your health data.",
+  "healthDenied": "Permission not granted. You can allow it in Health Connect.",
+  "healthUnsupported": "Health Connect is not available on this device.",
+  "healthNeedsInstall": "Install or update Health Connect to connect your watch.",
+  "installHealthConnect": "Install Health Connect",
+  "healthNoData": "No data yet. Make sure your watch app shares data with Health Connect.",
+  "samsungHealthHint": "Samsung: open Samsung Health → Settings → Health Connect and turn on data sharing.",
+  "syncing": "Syncing…",
+  "lastSync": "Updated at {time}",
+  "@lastSync": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "refresh": "Refresh",
+  "disconnect": "Disconnect",
+  "bpm": "bpm",
+  "hoursShort": "h",
+  "fromYourWatch": "From your watch",
+  "sleepDuration": "{h}h {m}m",
+  "@sleepDuration": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "bodybuilding": "Bodybuilding",
+  "bodybuildingSubtitle": "Splits · weights · progressive overload · PRs",
+  "nextSession": "Next session",
+  "startSession": "Start session",
+  "setsCount": "{count, plural, =1{1 set} other{{count} sets}}",
+  "@setsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "personalRecords": "Personal records",
+  "weeklySetsTitle": "Weekly volume by muscle",
+  "weeklySetsHint": "Working sets in the last 7 days · 10–20 is optimal for growth",
+  "programs": "Programs",
+  "daysPerWeek": "{count} days / week",
+  "@daysPerWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recentSessions": "Recent sessions",
+  "noSessionsYet": "No sessions yet — start your first one above.",
+  "tonnes": "t",
+  "noSetsDone": "Mark at least one set as done ✓",
+  "sessionDone": "Session complete!",
+  "setsLabel": "sets",
+  "newPr": "New PR",
+  "leaveSessionTitle": "Leave the session?",
+  "leaveSessionText": "Completed sets will not be saved.",
+  "finishSession": "Finish session",
+  "restSec": "rest {count}s",
+  "@restSec": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastTime": "Last time",
+  "setCol": "Set",
+  "repsCol": "Reps",
+  "addSet": "Add set",
+  "restTimer": "Rest",
+  "market": "Shop",
+  "myOrders": "My orders",
+  "noOrdersYet": "No orders yet.",
+  "orderStatusDemo": "demo order",
+  "mealDelivery": "Meal delivery",
+  "sportNutrition": "Sport nutrition",
+  "marketDemoNote": "Demo: products and meal programs are examples, orders are not sent anywhere.",
+  "yourDailyNorm": "Your daily norm: {count} kcal",
+  "@yourDailyNorm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ageYears": "{count} y.o.",
+  "@ageYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendedForYou": "Recommended for you",
+  "bestMatch": "Best match",
+  "mealsPerDay": "{count} meals/day",
+  "@mealsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "matchesYourNorm": "Matches your norm",
+  "kcalFromNorm": "{diff} kcal vs your norm",
+  "@kcalFromNorm": {
+    "placeholders": {
+      "diff": {
+        "type": "String"
+      }
+    }
+  },
+  "perDay": "day",
+  "allCompanies": "All companies",
+  "from": "from",
+  "callDemo": "Demo: calling is not available yet",
+  "rations": "Rations",
+  "sampleMenu": "Sample day menu:",
+  "howManyDays": "How many days?",
+  "daysCount": "{count, plural, =1{1 day} other{{count} days}}",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "orderFor": "Order · {sum}",
+  "@orderFor": {
+    "placeholders": {
+      "sum": {
+        "type": "String"
+      }
+    }
+  },
+  "proteinNeed": "Your protein need: ~{grams} g/day · goal: {goal}",
+  "@proteinNeed": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "addedToCart": "Added to cart",
+  "addToCart": "Add to cart",
+  "cart": "Cart",
+  "cartEmpty": "Your cart is empty",
+  "sportOrderTitle": "Sport nutrition · {count} items",
+  "@sportOrderTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cashOnDelivery": "Cash",
+  "checkout": "Checkout",
+  "deliveryAddress": "Delivery address",
+  "paymentMethod": "Payment method",
+  "total": "Total",
+  "placeOrder": "Place order",
+  "orderPlaced": "Order placed!",
+  "orderDemoNote": "This is a demo order. Real delivery and payment will work once partners are connected.",
+  "todaysMission": "Today's mission",
+  "startNow": "Start now",
+  "missionDone": "Mission complete!",
+  "missionDoneHint": "Great job — your streak is safe. Rest and recover.",
+  "missionRest": "Rest day",
+  "missionRestHint": "Recovery is part of training. A light walk counts as a bonus.",
+  "missionLightRun": "Light walk or run",
+  "missionStreakAtRisk": "Your {streak}-day streak burns out in {hours} h — don't lose it!",
+  "@missionStreakAtRisk": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "missionHoursLeft": "{hours} h left today. Start your streak now!",
+  "@missionHoursLeft": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "levelShort": "Level {level}",
+  "@levelShort": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "weekProgress": "{done} / {planned} done",
+  "@weekProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "planned": {
+        "type": "int"
+      }
+    }
+  },
+  "setScheduleCta": "Set a training schedule — we'll remind you and won't let you skip.",
+  "achievements": "Achievements",
+  "achFirst": "First workout",
+  "achStreak": "{count}-day streak",
+  "@achStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achWorkouts": "{count} workouts",
+  "@achWorkouts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achKcal": "{count} kcal burned",
+  "@achKcal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achKm": "{count} km run",
+  "@achKm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achLevel": "Reach level {count}",
+  "@achLevel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "xpToNext": "{xp} XP to the next level",
+  "@xpToNext": {
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "xpHowTo": "Each workout gives 50 XP plus 1 XP for every 5 kcal burned.",
+  "remindersHint": "Reminders on your training days",
+  "trainingDays": "Training days",
+  "reminderTime": "Reminder time",
+  "streakSaverHint": "If you haven't trained by {hour}:00, we'll send one more nudge to save your streak.",
+  "@streakSaverHint": {
+    "placeholders": {
+      "hour": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsDenied": "Notifications are blocked. Allow them in phone settings.",
+  "reminderTitle": "Time to train 💪",
+  "reminderBody": "Today's workout is waiting. 20 minutes is enough to keep your streak.",
+  "streakSaverTitle": "Your streak is burning out 🔥",
+  "streakSaverBody": "{count} days in a row — don't throw it away. Even a short session counts.",
+  "@streakSaverBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "streakSaverBodyNoStreak": "You haven't trained today yet. Start now — even 10 minutes counts.",
+  "techniqueVideo": "Technique video",
+  "techniqueVideos": "Technique videos",
+  "techniqueVideosHint": "Wrong form causes injuries. Watch how it's done before lifting.",
+  "compoundLift": "Compound · multi-joint",
+  "isolationLift": "Isolation",
+  "videoOpenFailed": "Couldn't open the video",
+  "change": "Change",
+  "missionRunHint": "GPS run — distance and real calories",
+  "missionForDay": "Mission for {day}",
+  "@missionForDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "missionPickHint": "Choose what you'll do on this day every week.",
+  "missionAuto": "Automatic",
+  "missionAutoHint": "The app picks a workout for you",
+  "missionBbHint": "Next day of your program:",
+  "dayMissions": "Mission for each day",
+  "letsStart": "Let's start",
+  "whyFitBody": "Why FitBody",
+  "userGuide": "User guide",
+  "openSection": "Open",
+  "replayTour": "Show the intro again",
+  "noPostsYet": "No posts yet. Be the first to share your progress!",
+  "noNotifications": "No notifications yet",
+  "navScan": "AI",
+  "sectionsTitle": "Sections",
+  "sectionRun": "Run",
+  "sectionGuide": "Guide",
+  "todayTitle": "Today",
+  "workoutsTitle": "Workouts",
+  "circlesLabel": "circles",
+  "stepIntoFrameHead": "Keep your face and shoulders in the frame",
+  "hintGetInPlank": "Get into plank, side-on to the camera",
+  "hintBiggerCircles": "Roll your head slowly, in wider circles",
+  "hintBendForward": "Fold further forward",
+  "hintKeepLegsStraight": "Keep your knees straight",
+  "placePhoneSide": "Place the phone 2–3 m away, side-on to you — keep your whole body in frame",
+  "placePhoneFront": "Place the phone 2–3 m away, facing you — keep your whole body in frame",
+  "browseArticles": "Browse articles"
+}
