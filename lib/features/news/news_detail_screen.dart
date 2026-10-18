@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/audience.dart';
+import '../../core/widgets/audience_switch.dart';
 import '../../core/content/content_l10n.dart';
 import '../../core/locale/locale_provider.dart';
 import '../../core/theme/app_colors.dart';
@@ -60,6 +62,10 @@ class NewsDetailScreen extends StatelessWidget {
                 item.category.label.of(context).toUpperCase(),
                 style: AppTextStyles.overline.copyWith(color: c),
               ),
+              if (item.audience != Audience.everyone) ...[
+                const SizedBox(width: 8),
+                AudienceBadge(audience: item.audience),
+              ],
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -146,9 +152,9 @@ class NewsDetailScreen extends StatelessWidget {
                     child: Text(
                       _t(
                         context,
-                        'Meal programs from FitBody Kitchen',
-                        "FitBody Kitchen ovqat ratsionlari",
-                        'Программы питания FitBody Kitchen',
+                        'Meal programs from Forkout Kitchen',
+                        "Forkout Kitchen ovqat ratsionlari",
+                        'Программы питания Forkout Kitchen',
                       ),
                       style: AppTextStyles.title.copyWith(
                         color: AppColors.textOnPrimary,

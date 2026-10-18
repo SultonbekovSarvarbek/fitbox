@@ -4,8 +4,11 @@ import 'widgets/user_avatar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/content/content_l10n.dart';
 import '../../core/locale/locale_provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/primary_button.dart';
 import '../setup/setup_profile.dart';
@@ -27,6 +30,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final _weight = TextEditingController(text: '${_user.weightKg}');
   late final _height = TextEditingController(text: '${_user.heightCm}');
   late final _age = TextEditingController(text: '${_user.age}');
+  late Gender _gender = _user.gender;
 
   @override
   void dispose() {
@@ -54,6 +58,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       ..phone = _phone.text.trim()
       ..weightKg = int.tryParse(_weight.text) ?? _user.weightKg
       ..heightCm = int.tryParse(_height.text) ?? _user.heightCm
+      ..gender = _gender
       ..age = int.tryParse(_age.text) ?? _user.age;
     if (newWeight != null && newWeight != _user.weightKg) {
       ref.read(weightLogProvider.notifier).add(newWeight.toDouble());
@@ -99,6 +104,68 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             controller: _phone,
             prefixIcon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
+          ),
+          gap,
+          Text(
+            const Tr('Gender', 'Jins', 'Пол').of(context),
+            style: AppTextStyles.captionSecondary,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              for (final g in Gender.values)
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: g == Gender.male ? AppSpacing.sm : 0,
+                    ),
+                    child: GestureDetector(
+                      onTap: () => setState(() => _gender = g),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 150),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        decoration: BoxDecoration(
+                          color: _gender == g
+                              ? AppColors.primary
+                              : AppColors.surface,
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              g == Gender.male
+                                  ? Icons.male_rounded
+                                  : Icons.female_rounded,
+                              color: _gender == g
+                                  ? AppColors.textOnPrimary
+                                  : AppColors.textPrimary,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              g == Gender.male ? l10n.male : l10n.female,
+                              style: AppTextStyles.title.copyWith(
+                                color: _gender == g
+                                    ? AppColors.textOnPrimary
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            const Tr(
+              'Used to pick sports nutrition and meal programs for you.',
+              "Sizga sportpit va ovqat ratsionlarini tanlash uchun ishlatiladi.",
+              'Используется, чтобы подбирать для вас спортпит и программы питания.',
+            ).of(context),
+            style: AppTextStyles.caption,
           ),
           gap,
           Row(

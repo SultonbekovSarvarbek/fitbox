@@ -20,6 +20,7 @@ import '../features/community/community_screen.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/food/food_scan_screen.dart';
 import '../features/home/home_shell.dart';
+import '../features/home/main_screen.dart';
 import '../features/launch/launch_screen.dart';
 import '../features/nutrition/meal_detail_screen.dart';
 import '../features/notifications/notifications_screen.dart';
@@ -48,6 +49,7 @@ abstract final class Routes {
   static const otp = '/auth/otp';
   static const setup = '/setup';
   static const home = '/home';
+  static const shop = '/shop';
   static const resources = '/resources';
   static const favorites = '/favorites';
   static const support = '/support';
@@ -186,7 +188,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: Routes.home,
-              builder: (_, _) => const ShopScreen(),
+              builder: (_, _) => const MainScreen(),
               routes: [
                 GoRoute(
                   path: 'workout',
@@ -224,6 +226,11 @@ final appRouter = GoRouter(
                 ),
               ],
             ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: Routes.shop, builder: (_, _) => const ShopScreen()),
           ],
         ),
         StatefulShellBranch(

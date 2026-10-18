@@ -1,7 +1,17 @@
-# FitBody
+# Forkout
 
-Flutter fitness ilovasi (Android / iOS · uz / ru / en): mashg'ulotlar, bodybuilding,
-yugurish, ovqatlanish, AI kamera (ML Kit pose), motivatsiya va eslatmalar.
+Flutter ilovasi (Android / iOS · uz / ru / en): sport ovqatlanish do'koni, bitta oshxonadan
+kuniga uch mahal yetkaziladigan ovqat obunasi va ovqatlanish hamda sport bo'yicha yangiliklar.
+
+- **Do'kon**: protein, kreatin va boshqalar; mahsulot sahifasida qo'llanilishi, tarkibi, qarshi ko'rsatmalar.
+- **Obuna**: Forkout Kitchen ratsionlari, 1 yoki 3 oy, kuryer ertalab / tushlik / kechqurun; to'lov oqimi (demo).
+- **Anketa va tavsiya**: vazn, maqsad, haftalik mashg'ulot va jins bo'yicha shaxsiy tanlov.
+- **Akkaunt**: telefon + SMS kod (demo kod), profil, obunani to'xtatish / bekor qilish, akkauntni o'chirish.
+- **Yangiliklar**: ovqatlanish, sport, qo'shimchalar, retseptlar; erkaklar va ayollar uchun alohida.
+
+Mashg'ulot bo'limlari (workout, bodybuilding, yugurish) kodda qolgan, lekin menyudan yashirilgan.
+Kamera orqali tekshirish (ML Kit) olib tashlangan: eski kod `lib/features/ai/pose/pose_check_screen.dart.mlkit`.
+Demo: to'lov, SMS, katalog va yangiliklar namunaviy; admin panel va serverga ulanish hali yo'q.
 
 ## Papkalar
 

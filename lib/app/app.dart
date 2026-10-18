@@ -17,7 +17,7 @@ class FitnessApp extends ConsumerWidget {
     ref.watch(userPersistenceProvider);
     ref.watch(reminderSyncProvider);
     return MaterialApp.router(
-      title: 'FitBody',
+      title: 'Forkout',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
       routerConfig: appRouter,

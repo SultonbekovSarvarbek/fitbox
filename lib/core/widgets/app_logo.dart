@@ -29,7 +29,7 @@ class AppLogo extends StatelessWidget {
         ),
         SizedBox(height: size * 0.2),
         Text(
-          'FITBODY',
+          'FORKOUT',
           style: AppTextStyles.display.copyWith(fontSize: size * 0.4),
         ),
       ],

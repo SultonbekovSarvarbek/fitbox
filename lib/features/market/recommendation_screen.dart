@@ -151,12 +151,7 @@ class RecommendationScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: PrimaryButton(
-                label: _t(
-                  context,
-                  'Go to the shop',
-                  "Do'konga o'tish",
-                  'Перейти в магазин',
-                ),
+                label: _t(context, 'Continue', 'Davom etish', 'Продолжить'),
                 expanded: true,
                 onPressed: () => context.go(Routes.home),
               ),

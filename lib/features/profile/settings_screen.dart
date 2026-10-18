@@ -214,7 +214,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const SizedBox(height: AppSpacing.xl),
           Center(
             child: Text(
-              'FitBody v1.0.0',
+              'Forkout v1.0.0',
               style: AppTextStyles.captionSecondary,
             ),
           ),

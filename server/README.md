@@ -1,4 +1,4 @@
-# FitBody API
+# Forkout API
 
 FastAPI + PostgreSQL. 1-bosqich: telefon raqam orqali kirish (SMS kod), profil, ma'lumotlarni sinxronlash.
 

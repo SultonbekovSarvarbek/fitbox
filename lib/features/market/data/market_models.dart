@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/audience.dart';
 import '../../../core/content/content_l10n.dart';
 import '../../../core/storage/stored_list.dart';
 import '../../setup/setup_profile.dart';
@@ -30,7 +31,7 @@ String formatSum(BuildContext context, int sum) {
 
 /// Bizning oshxona: hamma uchun bitta — ratsionlarni biz o'zimiz tayyorlaymiz va kuryer yetkazadi.
 /// TODO(backend/admin): ratsionlar, menyu va narxlar admin paneldan.
-const kitchenName = 'FitBody Kitchen';
+const kitchenName = 'Forkout Kitchen';
 
 class MealPlanOffer {
   const MealPlanOffer({
@@ -42,6 +43,7 @@ class MealPlanOffer {
     required this.pricePerDay,
     required this.goals,
     required this.menu,
+    this.audience = Audience.everyone,
   });
 
   final String id;
@@ -58,6 +60,9 @@ class MealPlanOffer {
 
   /// Bir kunlik menyu namunasi.
   final List<Tr> menu;
+
+  /// Kimlar uchun: hammaga, erkaklarga yoki ayollarga.
+  final Audience audience;
 }
 
 const _bf = Tr('Breakfast', 'Nonushta', 'Завтрак');
@@ -65,8 +70,12 @@ const _bf = Tr('Breakfast', 'Nonushta', 'Завтрак');
 const mealPlans = <MealPlanOffer>[
   MealPlanOffer(
     id: 'slim-1200',
-    title: Tr('Slim 1200', 'Slim 1200', 'Slim 1200'),
-    tagline: Tr('Gentle weight loss', 'Yengil ozish', 'Мягкое похудение'),
+    title: Tr('Weight Loss', 'Vazn tushirish', 'Снижение веса'),
+    tagline: Tr(
+      'Smaller portions and lots of vegetables for steady weight loss',
+      "Kichik porsiyalar va ko'p sabzavot — barqaror ozish uchun",
+      'Небольшие порции и много овощей для стабильного снижения веса',
+    ),
     kcal: 1200,
     mealsPerDay: 4,
     pricePerDay: 89000,
@@ -88,7 +97,7 @@ const mealPlans = <MealPlanOffer>[
   ),
   MealPlanOffer(
     id: 'light-1400',
-    title: Tr('Light 1400', 'Yengil 1400', 'Лёгкий 1400'),
+    title: Tr('Light Day', 'Yengil kun', 'Лёгкий день'),
     tagline: Tr(
       'Light, vegetable-based',
       'Yengil, sabzavotli',
@@ -111,7 +120,7 @@ const mealPlans = <MealPlanOffer>[
   ),
   MealPlanOffer(
     id: 'balance-1600',
-    title: Tr('Balance 1600', 'Balans 1600', 'Баланс 1600'),
+    title: Tr('Balance', 'Muvozanat', 'Баланс'),
     tagline: Tr(
       'Balanced everyday ration',
       'Muvozanatli kundalik ratsion',
@@ -139,7 +148,7 @@ const mealPlans = <MealPlanOffer>[
   ),
   MealPlanOffer(
     id: 'classic-2000',
-    title: Tr('Classic 2000', 'Klassik 2000', 'Классик 2000'),
+    title: Tr('Uzbek Classic', "O'zbek klassikasi", 'Узбекская классика'),
     tagline: Tr(
       'Healthy Uzbek home-style cuisine',
       "Uy uslubidagi sog'lom o'zbek taomlari",
@@ -162,7 +171,7 @@ const mealPlans = <MealPlanOffer>[
   ),
   MealPlanOffer(
     id: 'mass-2500',
-    title: Tr('Mass 2500', 'Massa 2500', 'Масса 2500'),
+    title: Tr('Muscle Gain', 'Mushak qurish', 'Набор мышц'),
     tagline: Tr(
       'High-protein, for muscle gain',
       "Mushak uchun yuqori oqsilli",
@@ -190,7 +199,7 @@ const mealPlans = <MealPlanOffer>[
   ),
   MealPlanOffer(
     id: 'bulk-3000',
-    title: Tr('Bulk 3000', 'Bulk 3000', 'Bulk 3000'),
+    title: Tr('Max Mass', 'Maksimal massa', 'Максимум массы'),
     tagline: Tr(
       'Maximum calories for gaining weight',
       "Vazn olish uchun maksimal kaloriya",
@@ -213,6 +222,128 @@ const mealPlans = <MealPlanOffer>[
       Tr('Nuts & dried fruits', "Yong'oq va quruq meva", 'Орехи и сухофрукты'),
     ],
   ),
+  MealPlanOffer(
+    id: 'she-1500',
+    title: Tr('Slim & Fit', "Ozg'in va tarang", 'Стройность'),
+    tagline: Tr(
+      'Light and balanced, for women who want to slim down',
+      "Yengil va muvozanatli, ozmoqchi bo'lgan ayollar uchun",
+      'Лёгкое и сбалансированное, для женщин, которые хотят похудеть',
+    ),
+    kcal: 1500,
+    mealsPerDay: 4,
+    pricePerDay: 92000,
+    goals: {Goal.loseWeight, Goal.shapeBody},
+    audience: Audience.women,
+    menu: [
+      Tr(
+        'Cottage cheese with berries',
+        'Tvorog va rezavorlar',
+        'Творог с ягодами',
+      ),
+      Tr(
+        'Chicken breast with quinoa',
+        "Kinoa bilan tovuq ko'kragi",
+        'Куриная грудка с киноа',
+      ),
+      Tr('Vegetable cream soup', "Sabzavotli krem-sho'rva", 'Овощной крем-суп'),
+      Tr(
+        'Baked fish with salad',
+        'Salat bilan pishirilgan baliq',
+        'Запечённая рыба с салатом',
+      ),
+    ],
+  ),
+  MealPlanOffer(
+    id: 'she-1900',
+    title: Tr('Energy & Shape', 'Energiya va shakl', 'Энергия и форма'),
+    tagline: Tr(
+      'For active women: enough energy for training',
+      "Faol ayollar uchun: mashg'ulotga yetarli energiya",
+      'Для активных женщин: достаточно энергии для тренировок',
+    ),
+    kcal: 1900,
+    mealsPerDay: 5,
+    pricePerDay: 112000,
+    goals: {Goal.shapeBody, Goal.muscleMass, Goal.others},
+    audience: Audience.women,
+    menu: [
+      Tr('Omelette with vegetables', 'Sabzavotli omlet', 'Омлет с овощами'),
+      Tr(
+        'Turkey with buckwheat',
+        "Grechka bilan kurka go'shti",
+        'Индейка с гречкой',
+      ),
+      Tr('Lentil soup', "Yasmiq sho'rva", 'Чечевичный суп'),
+      Tr(
+        'Greek yogurt with nuts and fruit',
+        "Grek yogurti, yong'oq va meva",
+        'Греческий йогурт с орехами и фруктами',
+      ),
+      Tr('Salmon with rice', 'Guruch bilan losos', 'Лосось с рисом'),
+    ],
+  ),
+  MealPlanOffer(
+    id: 'he-2400',
+    title: Tr('Strong & Fit', 'Kuch va shakl', 'Сила и форма'),
+    tagline: Tr(
+      'Balanced, for men who train regularly',
+      "Muvozanatli, muntazam mashq qiladigan erkaklar uchun",
+      'Сбалансированное, для мужчин, которые регулярно тренируются',
+    ),
+    kcal: 2400,
+    mealsPerDay: 4,
+    pricePerDay: 118000,
+    goals: {Goal.shapeBody, Goal.others, Goal.muscleMass},
+    audience: Audience.men,
+    menu: [
+      Tr('Eggs and oatmeal', 'Tuxum va suli bo\'tqasi', 'Яйца и овсянка'),
+      Tr(
+        'Beef with potatoes and salad',
+        "Kartoshka va salat bilan mol go'shti",
+        'Говядина с картофелем и салатом',
+      ),
+      Tr(
+        'Lean chicken plov',
+        "Yog'siz tovuqli osh",
+        'Плов с курицей (постный)',
+      ),
+      Tr('Cottage cheese with honey', 'Tvorog va asal', 'Творог с мёдом'),
+    ],
+  ),
+  MealPlanOffer(
+    id: 'he-2900',
+    title: Tr('Power Mass', 'Kuchli massa', 'Мощный набор'),
+    tagline: Tr(
+      'High-protein, for building muscle',
+      "Yuqori oqsilli, mushak qurish uchun",
+      'Высокобелковое, для набора мышечной массы',
+    ),
+    kcal: 2900,
+    mealsPerDay: 5,
+    pricePerDay: 152000,
+    goals: {Goal.muscleMass, Goal.gainWeight},
+    audience: Audience.men,
+    menu: [
+      Tr(
+        'Omelette, oats and banana',
+        'Omlet, suli va banan',
+        'Омлет, овсянка и банан',
+      ),
+      Tr(
+        'Beef steak with rice',
+        "Guruch bilan mol go'shti steyk",
+        'Стейк из говядины с рисом',
+      ),
+      Tr('Chicken pasta', 'Tovuqli makaron', 'Паста с курицей'),
+      Tr('Protein pancakes', 'Proteinli quymoq', 'Протеиновые панкейки'),
+      Tr(
+        'Salmon with potatoes',
+        'Kartoshka bilan losos',
+        'Лосось с картофелем',
+      ),
+    ],
+  ),
 ];
 
 /// Avvalgi versiyada saqlangan obunalar eski id bilan bo'lishi mumkin.
@@ -231,20 +362,33 @@ MealPlanOffer? mealPlanById(String id) {
 }
 
 /// Tavsiya: kaloriyasi me'yorga yaqin + maqsadga mos ratsionlar (eng yaxshisi birinchi).
+/// [gender] berilsa — faqat shu jinsga mos (yoki hamma uchun) ratsionlar, aynan shu jins
+/// uchun yaratilgani esa teng sharoitda ustun turadi.
 List<MealPlanOffer> recommendPlans({
   required int targetKcal,
   required Goal goal,
+  Gender? gender,
   List<MealPlanOffer> plans = mealPlans,
   int take = 3,
 }) {
+  final pool = [
+    for (final p in plans)
+      if (gender == null || audienceFitsGender(p.audience, gender)) p,
+  ];
+
   double score(MealPlanOffer p) {
     final diff = (p.kcal - targetKcal).abs() / targetKcal; // 0 — aynan mos
     // Kunlik me'yor maqsadni allaqachon hisobga oladi (ozish −500, massa +250...),
     // shuning uchun maqsadga mos kelmaslik faqat kichik jarima: kaloriya asosiy mezon.
-    return diff + (p.goals.contains(goal) ? 0.0 : 0.1);
+    final goalPenalty = p.goals.contains(goal) ? 0.0 : 0.1;
+    // Teng sharoitda aynan shu jins uchun yaratilgan ratsion yaxshiroq.
+    final specific = gender != null && audienceIsSpecificTo(p.audience, gender)
+        ? 0.02
+        : 0.0;
+    return diff + goalPenalty - specific;
   }
 
-  final sorted = [...plans]..sort((a, b) => score(a).compareTo(score(b)));
+  final sorted = [...pool]..sort((a, b) => score(a).compareTo(score(b)));
   return sorted.take(take).toList();
 }
 
@@ -252,7 +396,15 @@ List<MealPlanOffer> recommendPlans({
 // Sportpit
 // ---------------------------------------------------------------------------
 
-enum ProductCategory { protein, creatine, gainer, aminos, vitamins, bars }
+enum ProductCategory {
+  protein,
+  creatine,
+  gainer,
+  aminos,
+  vitamins,
+  wellness,
+  bars,
+}
 
 const categoryNames = <ProductCategory, Tr>{
   ProductCategory.protein: Tr('Protein', 'Protein', 'Протеин'),
@@ -264,6 +416,7 @@ const categoryNames = <ProductCategory, Tr>{
     'BCAA / Аминокислоты',
   ),
   ProductCategory.vitamins: Tr('Vitamins', 'Vitaminlar', 'Витамины'),
+  ProductCategory.wellness: Tr('Wellness', 'Salomatlik', 'Здоровье'),
   ProductCategory.bars: Tr('Bars', 'Batonchiklar', 'Батончики'),
 };
 
@@ -279,6 +432,7 @@ class Product {
     required this.description,
     required this.goals,
     this.image,
+    this.audience = Audience.everyone,
   });
 
   final String id;
@@ -295,6 +449,9 @@ class Product {
 
   /// Mahsulot rasmi (oq fonli qadoq surati); yo'q bo'lsa — kategoriya ikonkasi.
   final String? image;
+
+  /// Kimlar uchun: hammaga, erkaklarga yoki ayollarga.
+  final Audience audience;
 }
 
 const products = <Product>[
@@ -463,16 +620,176 @@ const products = <Product>[
     ),
     goals: {Goal.loseWeight, Goal.shapeBody, Goal.muscleMass},
   ),
+  // ------------------------------------------------------------------ Ayollarga
+  Product(
+    id: 'w-whey-lite',
+    name: Tr(
+      'Whey Lite for Women · Vanilla',
+      'Ayollar uchun Whey Lite · Vanil',
+      'Whey Lite для женщин · Ваниль',
+    ),
+    brand: 'FitFuel',
+    category: ProductCategory.protein,
+    price: 349000,
+    rating: 4.7,
+    size: Tr('900 g · 36 servings', '900 g · 36 porsiya', '900 г · 36 порций'),
+    description: Tr(
+      '20 g of protein and about 100 kcal per serving. A light shake for slimming and toning.',
+      "Porsiyada 20 g oqsil va ~100 kkal. Ozish va qomatni shakllantirish uchun yengil kokteyl.",
+      '20 г белка и около 100 ккал в порции. Лёгкий коктейль для похудения и тонуса.',
+    ),
+    goals: {Goal.loseWeight, Goal.shapeBody},
+    audience: Audience.women,
+  ),
+  Product(
+    id: 'w-multi',
+    name: Tr(
+      'Multivitamin for Women',
+      'Ayollar uchun multivitamin',
+      'Мультивитамины для женщин',
+    ),
+    brand: 'NutriPro',
+    category: ProductCategory.vitamins,
+    price: 179000,
+    rating: 4.6,
+    size: Tr('60 tablets', '60 tabletka', '60 таблеток'),
+    description: Tr(
+      'Vitamins and minerals for active women, including folate and vitamin D.',
+      "Faol ayollar uchun vitamin va minerallar, jumladan foliy kislotasi va D vitamini.",
+      'Витамины и минералы для активных женщин, в том числе фолиевая кислота и витамин D.',
+    ),
+    goals: {
+      Goal.loseWeight,
+      Goal.shapeBody,
+      Goal.muscleMass,
+      Goal.gainWeight,
+      Goal.others,
+    },
+    audience: Audience.women,
+  ),
+  Product(
+    id: 'w-iron',
+    name: Tr('Iron + Vitamin C', 'Temir + C vitamini', 'Железо + витамин C'),
+    brand: 'NutriPro',
+    category: ProductCategory.vitamins,
+    price: 129000,
+    rating: 4.5,
+    size: Tr('60 capsules', '60 kapsula', '60 капсул'),
+    description: Tr(
+      'Iron with vitamin C for better absorption. Take it only if a doctor found low iron.',
+      "Yaxshiroq so'rilishi uchun C vitamini bilan temir. Faqat shifokor temir kamligini aniqlagan bo'lsa qabul qiling.",
+      'Железо с витамином C для лучшего усвоения. Принимайте, только если врач выявил его нехватку.',
+    ),
+    goals: {Goal.loseWeight, Goal.shapeBody, Goal.others},
+    audience: Audience.women,
+  ),
+  Product(
+    id: 'w-collagen',
+    name: Tr(
+      'Collagen Peptides · Berry',
+      'Kollagen peptidlari · Rezavor',
+      'Коллагеновые пептиды · Ягоды',
+    ),
+    brand: 'FitFuel',
+    category: ProductCategory.wellness,
+    price: 259000,
+    rating: 4.5,
+    size: Tr('300 g · 30 servings', '300 g · 30 porsiya', '300 г · 30 порций'),
+    description: Tr(
+      'Collagen peptides that may support skin, nails and joints. Works best with vitamin C and regular training.',
+      "Teri, tirnoq va bo'g'imlarni qo'llab-quvvatlashi mumkin bo'lgan kollagen peptidlari. C vitamini va muntazam mashq bilan yaxshiroq ishlaydi.",
+      'Коллагеновые пептиды, которые могут поддерживать кожу, ногти и суставы. Лучше работают вместе с витамином C и регулярными тренировками.',
+    ),
+    goals: {Goal.shapeBody, Goal.loseWeight, Goal.others},
+    audience: Audience.women,
+  ),
+  // ---------------------------------------------------------------- Erkaklarga
+  Product(
+    id: 'm-whey-power',
+    name: Tr(
+      'Whey Power for Men · Chocolate',
+      'Erkaklar uchun Whey Power · Shokolad',
+      'Whey Power для мужчин · Шоколад',
+    ),
+    brand: 'IronLab',
+    category: ProductCategory.protein,
+    price: 399000,
+    rating: 4.6,
+    size: Tr('2 kg · 62 servings', '2 kg · 62 porsiya', '2 кг · 62 порции'),
+    description: Tr(
+      '28 g of protein per serving. For building muscle after training.',
+      "Porsiyada 28 g oqsil. Mashg'ulotdan keyin mushak qurish uchun.",
+      '28 г белка в порции. Для набора мышечной массы после тренировки.',
+    ),
+    goals: {Goal.muscleMass, Goal.gainWeight},
+    audience: Audience.men,
+  ),
+  Product(
+    id: 'm-multi',
+    name: Tr(
+      'Multivitamin for Men',
+      'Erkaklar uchun multivitamin',
+      'Мультивитамины для мужчин',
+    ),
+    brand: 'NutriPro',
+    category: ProductCategory.vitamins,
+    price: 179000,
+    rating: 4.6,
+    size: Tr('60 tablets', '60 tabletka', '60 таблеток'),
+    description: Tr(
+      'Vitamins and minerals for active men, with zinc and magnesium.',
+      "Faol erkaklar uchun vitamin va minerallar, rux va magniy bilan.",
+      'Витамины и минералы для активных мужчин, с цинком и магнием.',
+    ),
+    goals: {
+      Goal.loseWeight,
+      Goal.shapeBody,
+      Goal.muscleMass,
+      Goal.gainWeight,
+      Goal.others,
+    },
+    audience: Audience.men,
+  ),
+  Product(
+    id: 'm-zma',
+    name: Tr(
+      'Zinc + Magnesium + B6',
+      'Rux + Magniy + B6',
+      'Цинк + Магний + B6',
+    ),
+    brand: 'IronLab',
+    category: ProductCategory.wellness,
+    price: 159000,
+    rating: 4.5,
+    size: Tr('90 capsules', '90 kapsula', '90 капсул'),
+    description: Tr(
+      'Minerals for recovery and sleep after heavy training.',
+      "Og'ir mashg'ulotdan keyin tiklanish va uyqu uchun minerallar.",
+      'Минералы для восстановления и сна после тяжёлых тренировок.',
+    ),
+    goals: {Goal.muscleMass, Goal.gainWeight, Goal.shapeBody},
+    audience: Audience.men,
+  ),
 ];
 
 Product productById(String id) => products.firstWhere((p) => p.id == id);
 
-/// Maqsadga mos mahsulotlar (reyting bo'yicha).
-List<Product> recommendProducts(Goal goal, {int take = 4}) =>
-    (products.where((p) => p.goals.contains(goal)).toList()
-          ..sort((a, b) => b.rating.compareTo(a.rating)))
-        .take(take)
-        .toList();
+/// Maqsadga mos mahsulotlar. [gender] berilsa — faqat shu jinsga mos (yoki hamma uchun)
+/// mahsulotlar; aynan shu jins uchun yaratilganiga reytingga kichik ustama beriladi, shunda
+/// ular ko'rinadi, lekin asosiy mahsulotlar (protein, kreatin) ularning orqasida qolmaydi.
+List<Product> recommendProducts(Goal goal, {Gender? gender, int take = 4}) {
+  final list = [
+    for (final p in products)
+      if (p.goals.contains(goal) &&
+          (gender == null || audienceFitsGender(p.audience, gender)))
+        p,
+  ];
+  double score(Product p) =>
+      p.rating +
+      (gender != null && audienceIsSpecificTo(p.audience, gender) ? 0.3 : 0.0);
+  list.sort((a, b) => score(b).compareTo(score(a)));
+  return list.take(take).toList();
+}
 
 // ---------------------------------------------------------------------------
 // Savat va buyurtmalar

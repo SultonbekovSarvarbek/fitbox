@@ -182,7 +182,7 @@ class _TourPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           if (isMission) ...[
             Text(
-              context.l10n.whyFitBody.toUpperCase(),
+              context.l10n.whyForkout.toUpperCase(),
               style: AppTextStyles.overline.copyWith(color: AppColors.primary),
             ),
             const SizedBox(height: AppSpacing.sm),

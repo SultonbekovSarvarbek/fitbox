@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'FitBody';
+  String get appName => 'Forkout';
 
   @override
   String get next => 'Next';
@@ -567,7 +567,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supportGreeting =>
-      'Hi! 👋 I\'m your FitBody assistant. Ask me anything about workouts or nutrition.';
+      'Hi! 👋 I\'m your Forkout assistant. Ask me anything about workouts or nutrition.';
 
   @override
   String get supportAutoReply =>
@@ -1487,7 +1487,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get letsStart => 'Let\'s start';
 
   @override
-  String get whyFitBody => 'Why FitBody';
+  String get whyForkout => 'Why Forkout';
 
   @override
   String get userGuide => 'User guide';

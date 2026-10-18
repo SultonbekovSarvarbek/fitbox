@@ -35,9 +35,9 @@ const appMission = GuideTopic(
     'Личный тренер, который не даст бросить',
   ),
   summary: Tr(
-    'FitBody builds a plan from your height, weight, age and goal, tells you what to do every day, counts real calories and keeps you consistent with reminders, streaks and levels.',
-    'FitBody bo\'yingiz, vazningiz, yoshingiz va maqsadingizga qarab reja tuzadi, har kuni nima qilishni aytadi, real kaloriyani hisoblaydi va eslatma, seriya hamda darajalar bilan muntazam shug\'ullanishga undaydi.',
-    'FitBody строит план по росту, весу, возрасту и цели, каждый день говорит, что делать, считает реальные калории и держит вас в ритме с помощью напоминаний, серий и уровней.',
+    'Forkout builds a plan from your height, weight, age and goal, tells you what to do every day, counts real calories and keeps you consistent with reminders, streaks and levels.',
+    'Forkout bo\'yingiz, vazningiz, yoshingiz va maqsadingizga qarab reja tuzadi, har kuni nima qilishni aytadi, real kaloriyani hisoblaydi va eslatma, seriya hamda darajalar bilan muntazam shug\'ullanishga undaydi.',
+    'Forkout строит план по росту, весу, возрасту и цели, каждый день говорит, что делать, считает реальные калории и держит вас в ритме с помощью напоминаний, серий и уровней.',
   ),
   steps: [],
 );

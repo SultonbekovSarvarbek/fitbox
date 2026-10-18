@@ -515,4 +515,399 @@ const productInfo = <String, ProductInfo>{
       'Хранить в сухом месте при температуре до 25 °C. Не оставлять в жарком автомобиле.',
     ),
   ),
+  'w-whey-lite': ProductInfo(
+    benefits: [
+      Tr(
+        '20 g of protein for about 100 kcal — fits a calorie deficit',
+        "~100 kkalga 20 g oqsil — kaloriya tanqisligiga mos",
+        '20 г белка примерно на 100 ккал — подходит при дефиците калорий',
+      ),
+      Tr(
+        'A light snack between meals that keeps you full',
+        "Ovqatlar orasida to'qlik beruvchi yengil gazak",
+        'Лёгкий перекус между приёмами пищи, который насыщает',
+      ),
+      Tr(
+        'The protein itself is the same as in any whey: what matters is your daily total, not the "women’s" label',
+        "Oqsilning o'zi har qanday whey kabi: «ayollar uchun» yozuvi emas, kunlik umumiy miqdor muhim",
+        'Белок такой же, как в любом сывороточном: важна суточная норма, а не надпись «для женщин»',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Mix 1 serving (about 25 g) with 200 ml of water or skim milk.',
+        "1 porsiyani (taxminan 25 g) 200 ml suv yoki yog'siz sutga aralashtiring.",
+        'Размешайте 1 порцию (около 25 г) в 200 мл воды или обезжиренного молока.',
+      ),
+      Tr(
+        'Take 1–2 times a day as a snack or after training.',
+        "Kuniga 1–2 marta gazak sifatida yoki mashg'ulotdan keyin iching.",
+        'Принимайте 1–2 раза в день как перекус или после тренировки.',
+      ),
+    ],
+    facts: [
+      (Tr('Serving', 'Porsiya', 'Порция'), Tr('~25 g', '~25 g', '~25 г')),
+      (
+        Tr('Protein per serving', 'Porsiyada oqsil', 'Белка в порции'),
+        Tr('20 g', '20 g', '20 г'),
+      ),
+      (
+        Tr('Energy per serving', 'Porsiyada energiya', 'Энергия в порции'),
+        Tr('~100 kcal', '~100 kkal', '~100 ккал'),
+      ),
+      (
+        Tr('Servings per pack', 'Qadoqda porsiya', 'Порций в упаковке'),
+        Tr('36', '36', '36'),
+      ),
+    ],
+    contraindications: [
+      _milk,
+      Tr(
+        'Lactose intolerance — whey contains some lactose',
+        "Laktoza chidamsizligi — whey tarkibida laktoza bor",
+        'Непереносимость лактозы — в сывороточном белке есть лактоза',
+      ),
+      _kidney,
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'w-multi': ProductInfo(
+    benefits: [
+      Tr(
+        'Helps cover gaps in vitamins and minerals, including folate and vitamin D',
+        "Vitamin va minerallar, jumladan foliy kislotasi va D vitamini kamchiligini to'ldirishga yordam beradi",
+        'Помогает восполнить нехватку витаминов и минералов, в том числе фолиевой кислоты и витамина D',
+      ),
+      Tr(
+        'Does not replace fruits, vegetables and a varied diet',
+        "Meva, sabzavot va xilma-xil ovqatlanishning o'rnini bosmaydi",
+        'Не заменяет фрукты, овощи и разнообразное питание',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Take 1 tablet a day with breakfast, with water.',
+        "Kuniga 1 tabletka, nonushta bilan, suv bilan.",
+        'Принимайте 1 таблетку в день во время завтрака, запивая водой.',
+      ),
+      Tr(
+        'Do not combine with other vitamin complexes without a doctor’s advice.',
+        "Shifokor maslahatisiz boshqa vitamin komplekslari bilan birga qabul qilmang.",
+        'Не сочетайте с другими витаминными комплексами без совета врача.',
+      ),
+    ],
+    facts: [
+      (
+        Tr('Tablets per pack', 'Qadoqda tabletka', 'Таблеток в упаковке'),
+        Tr('60', '60', '60'),
+      ),
+      (
+        Tr('Daily dose', 'Kunlik doza', 'Суточная доза'),
+        Tr('1 tablet', '1 tabletka', '1 таблетка'),
+      ),
+    ],
+    contraindications: [
+      Tr(
+        'Individual intolerance to any component',
+        "Biror tarkibiy qismga individual chidamsizlik",
+        'Индивидуальная непереносимость любого компонента',
+      ),
+      Tr(
+        'Pregnancy or planning pregnancy — choose a complex together with a doctor',
+        "Homiladorlik yoki uni rejalashtirish — kompleksni shifokor bilan birga tanlang",
+        'Беременность или её планирование — подбирайте комплекс вместе с врачом',
+      ),
+      Tr(
+        'Taking other vitamin or mineral supplements — risk of overdose',
+        "Boshqa vitamin yoki mineral qo'shimchalarini qabul qilish — ortiqcha doza xavfi",
+        'Приём других витаминных или минеральных добавок — риск передозировки',
+      ),
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'w-iron': ProductInfo(
+    benefits: [
+      Tr(
+        'Iron is needed to form red blood cells and carry oxygen',
+        "Temir qizil qon tanachalari hosil bo'lishi va kislorod tashish uchun kerak",
+        'Железо нужно для образования эритроцитов и переноса кислорода',
+      ),
+      Tr(
+        'Vitamin C improves absorption of iron',
+        "C vitamini temirning so'rilishini yaxshilaydi",
+        'Витамин C улучшает усвоение железа',
+      ),
+      Tr(
+        'Women who train hard or have heavy periods can run low. The right way to find out is a blood test (hemoglobin, ferritin), not guessing',
+        "Jadal mashq qiladigan yoki hayz ko'p kelgan ayollarda temir kamayishi mumkin. Bilishning to'g'ri yo'li — taxmin emas, qon tahlili (gemoglobin, ferritin)",
+        'У женщин с интенсивными тренировками или обильными менструациями железа может не хватать. Узнать это правильно по анализу крови (гемоглобин, ферритин), а не наугад',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Take only if a doctor found low iron. Usually 1 capsule a day with food, or as the doctor advised.',
+        "Faqat shifokor temir kamligini aniqlagan bo'lsa qabul qiling. Odatda kuniga 1 kapsula ovqat bilan yoki shifokor aytganidek.",
+        'Принимайте, только если врач выявил нехватку железа. Обычно 1 капсула в день во время еды или как назначил врач.',
+      ),
+      Tr(
+        'Do not take with tea, coffee, milk or calcium supplements — they reduce absorption. The length of the course is decided by a doctor.',
+        "Choy, qahva, sut yoki kaltsiy qo'shimchalari bilan qabul qilmang — ular so'rilishni kamaytiradi. Kurs davomiyligini shifokor belgilaydi.",
+        'Не запивайте чаем, кофе, молоком и не принимайте вместе с препаратами кальция — они снижают усвоение. Длительность курса определяет врач.',
+      ),
+    ],
+    facts: [
+      (
+        Tr('Capsules per pack', 'Qadoqda kapsula', 'Капсул в упаковке'),
+        Tr('60', '60', '60'),
+      ),
+      (
+        Tr('Daily dose', 'Kunlik doza', 'Суточная доза'),
+        Tr('1 capsule', '1 kapsula', '1 капсула'),
+      ),
+      (
+        Tr('Form', 'Shakli', 'Форма'),
+        Tr('Iron + vitamin C', 'Temir + C vitamini', 'Железо + витамин C'),
+      ),
+    ],
+    contraindications: [
+      Tr(
+        'Do not take without a blood test or a doctor’s advice: too much iron is harmful',
+        "Qon tahlili yoki shifokor maslahatisiz qabul qilmang: temir ortiqcha bo'lsa zararli",
+        'Не принимайте без анализа крови или совета врача: избыток железа вреден',
+      ),
+      Tr(
+        'Iron overload conditions (for example hemochromatosis) and anemias not caused by iron deficiency',
+        "Temir ortiqcha to'planadigan holatlar (masalan, gemoxromatoz) va temir tanqisligidan bo'lmagan kamqonlik",
+        'Состояния с избытком железа (например, гемохроматоз) и анемии не из-за нехватки железа',
+      ),
+      Tr(
+        'Stomach or intestinal ulcers and inflammatory bowel disease — ask a doctor first',
+        "Oshqozon yoki ichak yarasi va yallig'lanishli ichak kasalliklari — avval shifokorga murojaat qiling",
+        'Язва желудка или кишечника и воспалительные заболевания кишечника — сначала проконсультируйтесь с врачом',
+      ),
+      Tr(
+        'Can cause nausea, constipation or dark stools. Keep out of reach of children: iron overdose is dangerous for them',
+        "Ko'ngil aynishi, ich qotishi yoki qora najasga olib kelishi mumkin. Bolalardan uzoq saqlang: ular uchun temir ortiqcha dozasi xavfli",
+        'Может вызывать тошноту, запор или тёмный стул. Хранить вдали от детей: передозировка железа для них опасна',
+      ),
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'w-collagen': ProductInfo(
+    benefits: [
+      Tr(
+        'Collagen peptides may support skin elasticity and joint comfort; the evidence is modest and results are individual',
+        "Kollagen peptidlari teri elastikligi va bo'g'imlar qulayligini qo'llab-quvvatlashi mumkin; dalillar o'rtacha, natija har kimda boshqacha",
+        'Коллагеновые пептиды могут поддерживать упругость кожи и комфорт суставов; доказательства умеренные, результат индивидуален',
+      ),
+      Tr(
+        'It is an incomplete protein, so it does not replace whey, eggs or meat',
+        "Bu to'liq bo'lmagan oqsil, shuning uchun whey, tuxum yoki go'shtning o'rnini bosmaydi",
+        'Это неполноценный белок, поэтому он не заменяет сывороточный белок, яйца или мясо',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Dissolve 1 serving (about 10 g) in water, coffee or a smoothie once a day.',
+        "1 porsiyani (taxminan 10 g) kuniga bir marta suv, qahva yoki smuzida eriting.",
+        'Растворите 1 порцию (около 10 г) в воде, кофе или смузи раз в день.',
+      ),
+      Tr(
+        'Give it at least 8–12 weeks before judging. Eat enough vitamin C (fruit, vegetables) and keep training.',
+        "Baho berishdan oldin kamida 8–12 hafta kuting. Yetarli C vitamini (meva, sabzavot) iste'mol qiling va mashq qilishni davom ettiring.",
+        'Оценивайте не раньше чем через 8–12 недель. Ешьте достаточно витамина C (фрукты, овощи) и продолжайте тренироваться.',
+      ),
+    ],
+    facts: [
+      (Tr('Serving', 'Porsiya', 'Порция'), Tr('~10 g', '~10 g', '~10 г')),
+      (
+        Tr('Servings per pack', 'Qadoqda porsiya', 'Порций в упаковке'),
+        Tr('30', '30', '30'),
+      ),
+      (
+        Tr('Type', 'Turi', 'Тип'),
+        Tr(
+          'Hydrolysed collagen peptides',
+          'Gidrolizlangan kollagen peptidlari',
+          'Гидролизованные коллагеновые пептиды',
+        ),
+      ),
+    ],
+    contraindications: [
+      Tr(
+        'Allergy to the source (bovine or fish) — check the label',
+        "Manbaga (qoramol yoki baliq) allergiya — yorliqni tekshiring",
+        'Аллергия на источник (говяжий или рыбный) — проверьте этикетку',
+      ),
+      _kidney,
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'm-whey-power': ProductInfo(
+    benefits: [
+      Tr(
+        '28 g of protein per serving — easy to reach your daily target',
+        "Porsiyada 28 g oqsil — kunlik me'yorga erishish oson",
+        '28 г белка в порции — легко добрать суточную норму',
+      ),
+      Tr(
+        'Convenient after training together with a balanced diet',
+        "Muvozanatli ovqatlanish bilan birga mashg'ulotdan keyin qulay",
+        'Удобен после тренировки вместе со сбалансированным питанием',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Mix 1 serving (about 32 g) with 250 ml of water or milk.',
+        "1 porsiyani (taxminan 32 g) 250 ml suv yoki sutga aralashtiring.",
+        'Размешайте 1 порцию (около 32 г) в 250 мл воды или молока.',
+      ),
+      Tr(
+        'Take 1–2 times a day: after training or between meals. Count it in your daily protein.',
+        "Kuniga 1–2 marta: mashg'ulotdan keyin yoki ovqatlar orasida. Kunlik oqsilga qo'shib hisoblang.",
+        'Принимайте 1–2 раза в день: после тренировки или между приёмами пищи. Учитывайте в суточной норме белка.',
+      ),
+    ],
+    facts: [
+      (Tr('Serving', 'Porsiya', 'Порция'), Tr('~32 g', '~32 g', '~32 г')),
+      (
+        Tr('Protein per serving', 'Porsiyada oqsil', 'Белка в порции'),
+        Tr('28 g', '28 g', '28 г'),
+      ),
+      (
+        Tr('Servings per pack', 'Qadoqda porsiya', 'Порций в упаковке'),
+        Tr('62', '62', '62'),
+      ),
+    ],
+    contraindications: [
+      _milk,
+      Tr(
+        'Lactose intolerance — whey contains some lactose',
+        "Laktoza chidamsizligi — whey tarkibida laktoza bor",
+        'Непереносимость лактозы — в сывороточном белке есть лактоза',
+      ),
+      _kidney,
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'm-multi': ProductInfo(
+    benefits: [
+      Tr(
+        'Helps cover gaps in vitamins and minerals, with zinc and magnesium',
+        "Vitamin va minerallar, rux va magniy kamchiligini to'ldirishga yordam beradi",
+        'Помогает восполнить нехватку витаминов и минералов, с цинком и магнием',
+      ),
+      Tr(
+        'Does not replace fruits, vegetables and a varied diet',
+        "Meva, sabzavot va xilma-xil ovqatlanishning o'rnini bosmaydi",
+        'Не заменяет фрукты, овощи и разнообразное питание',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Take 1 tablet a day with breakfast, with water.',
+        "Kuniga 1 tabletka, nonushta bilan, suv bilan.",
+        'Принимайте 1 таблетку в день во время завтрака, запивая водой.',
+      ),
+      Tr(
+        'Do not combine with other vitamin or zinc supplements without a doctor’s advice: very high zinc is harmful.',
+        "Shifokor maslahatisiz boshqa vitamin yoki rux qo'shimchalari bilan birga qabul qilmang: juda ko'p rux zararli.",
+        'Не сочетайте с другими витаминами или препаратами цинка без совета врача: очень высокие дозы цинка вредны.',
+      ),
+    ],
+    facts: [
+      (
+        Tr('Tablets per pack', 'Qadoqda tabletka', 'Таблеток в упаковке'),
+        Tr('60', '60', '60'),
+      ),
+      (
+        Tr('Daily dose', 'Kunlik doza', 'Суточная доза'),
+        Tr('1 tablet', '1 tabletka', '1 таблетка'),
+      ),
+    ],
+    contraindications: [
+      Tr(
+        'Individual intolerance to any component',
+        "Biror tarkibiy qismga individual chidamsizlik",
+        'Индивидуальная непереносимость любого компонента',
+      ),
+      Tr(
+        'Taking other vitamin or mineral supplements — risk of overdose',
+        "Boshqa vitamin yoki mineral qo'shimchalarini qabul qilish — ortiqcha doza xavfi",
+        'Приём других витаминных или минеральных добавок — риск передозировки',
+      ),
+      Tr(
+        'Chronic diseases or regular medication — ask a doctor first',
+        "Surunkali kasalliklar yoki doimiy dori qabul qilish — avval shifokorga murojaat qiling",
+        'Хронические заболевания или постоянный приём лекарств — сначала проконсультируйтесь с врачом',
+      ),
+      _special,
+    ],
+    storage: _dry,
+  ),
+  'm-zma': ProductInfo(
+    benefits: [
+      Tr(
+        'Zinc and magnesium contribute to normal muscle function, and magnesium may help you wind down in the evening',
+        "Rux va magniy mushaklarning normal ishlashiga hissa qo'shadi, magniy esa kechqurun tinchlanishga yordam berishi mumkin",
+        'Цинк и магний участвуют в нормальной работе мышц, а магний может помочь расслабиться вечером',
+      ),
+      Tr(
+        'Claims about boosting testosterone are not proven in healthy men with normal levels. For real concerns see a doctor',
+        "Testosteronni oshirish haqidagi da'volar normal darajali sog'lom erkaklarda isbotlanmagan. Haqiqiy tashvish bo'lsa, shifokorga murojaat qiling",
+        'Заявления о повышении тестостерона не доказаны у здоровых мужчин с нормальным уровнем. При реальных опасениях обратитесь к врачу',
+      ),
+    ],
+    howToUse: [
+      Tr(
+        'Take as written on the label, usually in the evening, 30–60 minutes before bed.',
+        "Yorliqda yozilganidek, odatda kechqurun, uxlashdan 30–60 daqiqa oldin qabul qiling.",
+        'Принимайте так, как указано на этикетке, обычно вечером за 30–60 минут до сна.',
+      ),
+      Tr(
+        'Do not take with milk or calcium supplements, which reduce absorption, and do not exceed the dose.',
+        "Sut yoki kaltsiy qo'shimchalari bilan qabul qilmang, ular so'rilishni kamaytiradi, va dozadan oshirmang.",
+        'Не принимайте с молоком или препаратами кальция, они снижают усвоение, и не превышайте дозу.',
+      ),
+    ],
+    facts: [
+      (
+        Tr('Capsules per pack', 'Qadoqda kapsula', 'Капсул в упаковке'),
+        Tr('90', '90', '90'),
+      ),
+      (
+        Tr('Contains', 'Tarkibi', 'Содержит'),
+        Tr(
+          'Zinc, magnesium, vitamin B6',
+          'Rux, magniy, B6 vitamini',
+          'Цинк, магний, витамин B6',
+        ),
+      ),
+    ],
+    contraindications: [
+      _kidney,
+      Tr(
+        'Taking certain antibiotics (quinolones, tetracyclines): minerals reduce their absorption — ask a doctor or pharmacist',
+        "Ayrim antibiotiklar (xinolonlar, tetratsiklinlar) qabul qilish: minerallar ularning so'rilishini kamaytiradi — shifokor yoki farmatsevtga murojaat qiling",
+        'Приём некоторых антибиотиков (хинолоны, тетрациклины): минералы снижают их усвоение — спросите врача или фармацевта',
+      ),
+      Tr(
+        'Long-term high doses of zinc can lower copper levels — do not exceed the dose',
+        "Ruxning uzoq muddatli yuqori dozalari misni kamaytirishi mumkin — dozadan oshirmang",
+        'Длительные высокие дозы цинка могут снижать уровень меди — не превышайте дозу',
+      ),
+      Tr(
+        'May upset the stomach on an empty stomach',
+        "Och qoringa oshqozonni bezovta qilishi mumkin",
+        'Натощак может вызывать дискомфорт в желудке',
+      ),
+      _special,
+    ],
+    storage: _dry,
+  ),
 };

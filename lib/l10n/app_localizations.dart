@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'FitBody'**
+  /// **'Forkout'**
   String get appName;
 
   /// No description provided for @next.
@@ -1087,7 +1087,7 @@ abstract class AppLocalizations {
   /// No description provided for @supportGreeting.
   ///
   /// In en, this message translates to:
-  /// **'Hi! 👋 I\'m your FitBody assistant. Ask me anything about workouts or nutrition.'**
+  /// **'Hi! 👋 I\'m your Forkout assistant. Ask me anything about workouts or nutrition.'**
   String get supportGreeting;
 
   /// No description provided for @supportAutoReply.
@@ -2650,11 +2650,11 @@ abstract class AppLocalizations {
   /// **'Let\'s start'**
   String get letsStart;
 
-  /// No description provided for @whyFitBody.
+  /// No description provided for @whyForkout.
   ///
   /// In en, this message translates to:
-  /// **'Why FitBody'**
-  String get whyFitBody;
+  /// **'Why Forkout'**
+  String get whyForkout;
 
   /// No description provided for @userGuide.
   ///

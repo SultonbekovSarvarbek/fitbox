@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/audience.dart';
+import '../../core/widgets/audience_switch.dart';
 import '../../core/content/content_l10n.dart';
 import '../../core/locale/locale_provider.dart';
 import '../../core/theme/app_colors.dart';
@@ -77,7 +79,15 @@ class ProductScreen extends ConsumerWidget {
             iconSize: 96,
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(p.brand.toUpperCase(), style: AppTextStyles.overline),
+          Row(
+            children: [
+              Text(p.brand.toUpperCase(), style: AppTextStyles.overline),
+              if (p.audience != Audience.everyone) ...[
+                const SizedBox(width: AppSpacing.sm),
+                AudienceBadge(audience: p.audience),
+              ],
+            ],
+          ),
           Text(p.name.of(context), style: AppTextStyles.h1),
           const SizedBox(height: 4),
           Row(

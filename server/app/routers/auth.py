@@ -49,7 +49,7 @@ async def request_otp(body: OtpRequest, session: Session) -> OtpRequestOut:
 
     code = generate_otp()
     try:
-        await get_sms_sender().send(phone, f"FitBody tasdiqlash kodi: {code}")
+        await get_sms_sender().send(phone, f"Forkout tasdiqlash kodi: {code}")
     except SmsError:
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "sms_failed") from None
 

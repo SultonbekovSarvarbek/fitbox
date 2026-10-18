@@ -16,6 +16,7 @@ IconData categoryIcon(ProductCategory c) => switch (c) {
   ProductCategory.gainer => Icons.trending_up_rounded,
   ProductCategory.aminos => Icons.science_rounded,
   ProductCategory.vitamins => Icons.medication_rounded,
+  ProductCategory.wellness => Icons.spa_rounded,
   ProductCategory.bars => Icons.cookie_rounded,
 };
 
@@ -55,16 +56,38 @@ class _DemoBanner extends StatelessWidget {
 // Ovqat yetkazib berish
 // ---------------------------------------------------------------------------
 
-class _DeliveryTab extends ConsumerWidget {
+class _DeliveryTab extends ConsumerStatefulWidget {
   const _DeliveryTab();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DeliveryTab> createState() => _DeliveryTabState();
+}
+
+class _DeliveryTabState extends ConsumerState<_DeliveryTab> {
+  /// Boshida — anketadagi jinsga mos; foydalanuvchi o'zgartira oladi.
+  late AudienceFilter _audience = audienceFilterFor(
+    ref.read(userProvider).gender,
+  );
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final user = ref.watch(userProvider);
     final target = ref.watch(dailyTargetsProvider);
-    final best = recommendPlans(targetKcal: target.kcal, goal: user.goal).first;
-    final others = [...mealPlans]..sort((a, b) => a.kcal.compareTo(b.kcal));
+    final gender = switch (_audience) {
+      AudienceFilter.all => null,
+      AudienceFilter.men => Gender.male,
+      AudienceFilter.women => Gender.female,
+    };
+    final best = recommendPlans(
+      targetKcal: target.kcal,
+      goal: user.goal,
+      gender: gender,
+    ).first;
+    final others = [
+      for (final p in mealPlans)
+        if (audienceVisible(p.audience, _audience)) p,
+    ]..sort((a, b) => a.kcal.compareTo(b.kcal));
     String t(String en, String uz, String ru) => Tr(en, uz, ru).of(context);
 
     EdgeInsets pad([double bottom = 0]) =>
@@ -72,6 +95,11 @@ class _DeliveryTab extends ConsumerWidget {
 
     final items = <Widget>[
       const _ActiveSubscriptions(),
+      AudienceSwitch(
+        value: _audience,
+        onChanged: (v) => setState(() => _audience = v),
+      ),
+      const SizedBox(height: AppSpacing.md),
       // Bizning oshxona.
       Padding(
         padding: pad(AppSpacing.md),
@@ -142,7 +170,7 @@ class _DeliveryTab extends ConsumerWidget {
       SectionTitle(title: l10n.recommendedForYou),
       Padding(
         padding: pad(),
-        child: _BestPlanCard(plan: best, targetKcal: target.kcal),
+        child: BestPlanCard(plan: best, targetKcal: target.kcal),
       ),
       SectionTitle(
         title: t('All programs', 'Barcha ratsionlar', 'Все программы'),
@@ -150,7 +178,7 @@ class _DeliveryTab extends ConsumerWidget {
       for (final p in others)
         Padding(
           padding: pad(AppSpacing.sm),
-          child: _PlanTile(plan: p),
+          child: PlanTile(plan: p),
         ),
     ];
 
@@ -163,8 +191,8 @@ class _DeliveryTab extends ConsumerWidget {
 }
 
 /// Anketaga eng mos ratsion: katta karta, menyu namunasi va "Obuna bo'lish".
-class _BestPlanCard extends StatelessWidget {
-  const _BestPlanCard({required this.plan, required this.targetKcal});
+class BestPlanCard extends StatelessWidget {
+  const BestPlanCard({super.key, required this.plan, required this.targetKcal});
 
   final MealPlanOffer plan;
   final int targetKcal;
@@ -248,8 +276,8 @@ class _BestPlanCard extends StatelessWidget {
 }
 
 /// Bitta ratsion qatori: nomi, kimga mos, kaloriya, kunlik narx.
-class _PlanTile extends StatelessWidget {
-  const _PlanTile({required this.plan});
+class PlanTile extends StatelessWidget {
+  const PlanTile({super.key, required this.plan});
 
   final MealPlanOffer plan;
 
@@ -264,7 +292,20 @@ class _PlanTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(plan.title.of(context), style: AppTextStyles.h3),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        plan.title.of(context),
+                        style: AppTextStyles.h3,
+                      ),
+                    ),
+                    if (plan.audience != Audience.everyone) ...[
+                      const SizedBox(width: 6),
+                      AudienceBadge(audience: plan.audience),
+                    ],
+                  ],
+                ),
                 Text(
                   plan.tagline.of(context),
                   style: AppTextStyles.bodySecondary,
@@ -345,18 +386,40 @@ class _StoreTab extends ConsumerStatefulWidget {
 class _StoreTabState extends ConsumerState<_StoreTab> {
   ProductCategory? _category;
 
+  /// Boshida — anketadagi jinsga mos; foydalanuvchi o'zgartira oladi.
+  late AudienceFilter _audience = audienceFilterFor(
+    ref.read(userProvider).gender,
+  );
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final goal = ref.watch(userProvider).goal;
     final target = ref.watch(dailyTargetsProvider);
-    final rec = recommendProducts(goal);
-    final list = _category == null
-        ? products
-        : products.where((p) => p.category == _category).toList();
+    final rec = recommendProducts(
+      goal,
+      gender: switch (_audience) {
+        AudienceFilter.all => null,
+        AudienceFilter.men => Gender.male,
+        AudienceFilter.women => Gender.female,
+      },
+    );
+    final list = [
+      for (final p in products)
+        if (audienceVisible(p.audience, _audience) &&
+            (_category == null || p.category == _category))
+          p,
+    ];
 
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(
+          child: AudienceSwitch(
+            value: _audience,
+            onChanged: (v) => setState(() => _audience = v),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.md)),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -386,7 +449,7 @@ class _StoreTabState extends ConsumerState<_StoreTab> {
               itemCount: rec.length,
               separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.md),
               itemBuilder: (_, i) =>
-                  SizedBox(width: 170, child: _ProductCard(product: rec[i])),
+                  SizedBox(width: 170, child: ProductCard(product: rec[i])),
             ),
           ),
         ),
@@ -422,7 +485,7 @@ class _StoreTabState extends ConsumerState<_StoreTab> {
             delegate: SliverChildBuilderDelegate(
               (_, i) => FadeSlideIn(
                 index: i,
-                child: _ProductCard(product: list[i]),
+                child: ProductCard(product: list[i]),
               ),
               childCount: list.length,
             ),
@@ -433,8 +496,8 @@ class _StoreTabState extends ConsumerState<_StoreTab> {
   }
 }
 
-class _ProductCard extends ConsumerWidget {
-  const _ProductCard({required this.product});
+class ProductCard extends ConsumerWidget {
+  const ProductCard({super.key, required this.product});
 
   final Product product;
 
@@ -449,11 +512,21 @@ class _ProductCard extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: ProductImage(
-              product: product,
-              width: double.infinity,
-              radius: AppRadius.md,
-              iconSize: 44,
+            child: Stack(
+              children: [
+                ProductImage(
+                  product: product,
+                  width: double.infinity,
+                  height: double.infinity,
+                  radius: AppRadius.md,
+                  iconSize: 44,
+                ),
+                Positioned(
+                  top: 6,
+                  left: 6,
+                  child: AudienceBadge(audience: product.audience),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

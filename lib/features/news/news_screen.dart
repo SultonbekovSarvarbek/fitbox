@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/audience.dart';
 import '../../core/content/content_l10n.dart';
 import '../../core/locale/locale_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../core/widgets/audience_switch.dart';
 import '../../core/widgets/pill_tabs.dart';
 import '../market/subscribe_screen.dart' show formatDate;
+import '../setup/setup_profile.dart';
 import 'data/news_models.dart';
 
 /// "Yangiliklar" tabi: ovqatlanish, sport, qo'shimchalar va retseptlar.
-class NewsScreen extends StatefulWidget {
+class NewsScreen extends ConsumerStatefulWidget {
   const NewsScreen({super.key});
 
   @override
-  State<NewsScreen> createState() => _NewsScreenState();
+  ConsumerState<NewsScreen> createState() => _NewsScreenState();
 }
 
-class _NewsScreenState extends State<NewsScreen> {
+class _NewsScreenState extends ConsumerState<NewsScreen> {
   /// 0 — hammasi, 1.. — kategoriyalar.
   int _tab = 0;
+
+  /// Boshida — anketadagi jinsga mos; foydalanuvchi o'zgartira oladi.
+  late AudienceFilter _audience = audienceFilterFor(
+    ref.read(userProvider).gender,
+  );
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final categories = NewsCategory.values;
     final category = _tab == 0 ? null : categories[_tab - 1];
-    final items = newsSorted(category);
+    final items = newsSorted(category, _audience);
     final featured = category == null ? featuredNews : null;
     final rest = [
       for (final n in items)
@@ -43,6 +52,11 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       body: Column(
         children: [
+          AudienceSwitch(
+            value: _audience,
+            onChanged: (v) => setState(() => _audience = v),
+          ),
+          const SizedBox(height: AppSpacing.md),
           PillTabs(
             labels: [
               const Tr('All', 'Hammasi', 'Все').of(context),
@@ -61,6 +75,20 @@ class _NewsScreenState extends State<NewsScreen> {
                 AppSpacing.lg,
               ),
               children: [
+                if (items.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xl),
+                    child: Center(
+                      child: Text(
+                        const Tr(
+                          'Nothing here yet',
+                          "Hozircha bu yerda hech narsa yo'q",
+                          'Пока здесь ничего нет',
+                        ).of(context),
+                        style: AppTextStyles.bodySecondary,
+                      ),
+                    ),
+                  ),
                 if (featured != null) ...[
                   _FeaturedCard(item: featured),
                   const SizedBox(height: AppSpacing.md),
@@ -116,6 +144,10 @@ class _FeaturedCard extends StatelessWidget {
                     item.category.label.of(context).toUpperCase(),
                     style: AppTextStyles.overline.copyWith(color: c),
                   ),
+                  if (item.audience != Audience.everyone) ...[
+                    const SizedBox(width: 8),
+                    AudienceBadge(audience: item.audience),
+                  ],
                   const Spacer(),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -190,9 +222,17 @@ class NewsTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.category.label.of(context).toUpperCase(),
-                      style: AppTextStyles.overline.copyWith(color: c),
+                    Row(
+                      children: [
+                        Text(
+                          item.category.label.of(context).toUpperCase(),
+                          style: AppTextStyles.overline.copyWith(color: c),
+                        ),
+                        if (item.audience != Audience.everyone) ...[
+                          const SizedBox(width: 8),
+                          AudienceBadge(audience: item.audience),
+                        ],
+                      ],
                     ),
                     const SizedBox(height: 2),
                     Text(

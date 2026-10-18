@@ -8,7 +8,7 @@ from .routers import auth, me, sync
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
 app = FastAPI(
-    title="FitBody API",
+    title="Forkout API",
     version="0.1.0",
     # Hujjat sahifasi faqat dev'da ochiq.
     docs_url="/docs" if get_settings().is_dev else None,

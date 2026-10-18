@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router.dart';
+import '../../core/audience.dart';
+import '../../core/widgets/audience_switch.dart';
 import '../../core/content/content_l10n.dart';
 import '../../core/locale/locale_provider.dart';
 import '../../core/theme/app_colors.dart';
@@ -130,7 +132,7 @@ void showOrdersSheet(BuildContext context) {
   );
 }
 
-List<Widget> _marketActions(BuildContext context, WidgetRef ref) {
+List<Widget> marketActions(BuildContext context, WidgetRef ref) {
   final l10n = context.l10n;
   return [
     IconButton(
@@ -161,7 +163,7 @@ class ShopScreen extends ConsumerWidget {
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(l10n.tabShop, style: AppTextStyles.h2),
-        actions: _marketActions(context, ref),
+        actions: marketActions(context, ref),
       ),
       body: Column(
         children: [
@@ -185,7 +187,7 @@ class SubscriptionScreen extends ConsumerWidget {
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(l10n.tabSubscription, style: AppTextStyles.h2),
-        actions: _marketActions(context, ref),
+        actions: marketActions(context, ref),
       ),
       body: Column(
         children: [

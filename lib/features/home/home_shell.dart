@@ -6,13 +6,14 @@ import '../../core/locale/locale_provider.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_styles.dart';
 
-/// 11. Bottom Navigation — qora panel: Do'kon · Obuna · Yangiliklar · Profil.
+/// 11. Bottom Navigation — qora panel: Asosiy · Do'kon · Obuna · Yangiliklar · Profil.
 class HomeShell extends StatelessWidget {
   const HomeShell({super.key, required this.shell});
 
   final StatefulNavigationShell shell;
 
   static const _items = [
+    (Icons.home_outlined, Icons.home_rounded),
     (Icons.storefront_outlined, Icons.storefront_rounded),
     (Icons.local_shipping_outlined, Icons.local_shipping_rounded),
     (Icons.newspaper_outlined, Icons.newspaper_rounded),
@@ -69,10 +70,11 @@ class HomeShell extends StatelessWidget {
         padding: EdgeInsets.zero,
         child: Row(
           children: [
-            _tab(0, l10n.tabShop),
-            _tab(1, l10n.tabSubscription),
-            _tab(2, l10n.tabNews),
-            _tab(3, l10n.tabProfile),
+            _tab(0, l10n.tabHome),
+            _tab(1, l10n.tabShop),
+            _tab(2, l10n.tabSubscription),
+            _tab(3, l10n.tabNews),
+            _tab(4, l10n.tabProfile),
           ],
         ),
       ),

@@ -9,7 +9,7 @@ class AppLocalizationsUz extends AppLocalizations {
   AppLocalizationsUz([String locale = 'uz']) : super(locale);
 
   @override
-  String get appName => 'FitBody';
+  String get appName => 'Forkout';
 
   @override
   String get next => 'Keyingi';
@@ -543,7 +543,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get supportGreeting =>
-      'Salom! 👋 Men FitBody yordamchisiman. Mashg\'ulot yoki ovqatlanish haqida so\'rang.';
+      'Salom! 👋 Men Forkout yordamchisiman. Mashg\'ulot yoki ovqatlanish haqida so\'rang.';
 
   @override
   String get supportAutoReply =>
@@ -1447,7 +1447,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get letsStart => 'Boshladik!';
 
   @override
-  String get whyFitBody => 'FitBody nima uchun';
+  String get whyForkout => 'Forkout nima uchun';
 
   @override
   String get userGuide => 'Foydalanish qo\'llanmasi';

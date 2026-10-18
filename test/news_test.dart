@@ -190,9 +190,9 @@ void main() {
     testWidgets('meal-prep article links to our meal programs', (tester) async {
       await pump(tester, initial: '/news/meal-prep');
       await tester.ensureVisible(
-        find.text('Meal programs from FitBody Kitchen'),
+        find.text('Meal programs from Forkout Kitchen'),
       );
-      await tester.tap(find.text('Meal programs from FitBody Kitchen'));
+      await tester.tap(find.text('Meal programs from Forkout Kitchen'));
       await tester.pumpAndSettle();
       expect(find.text('SUBSCRIPTION TAB'), findsOneWidget);
     });

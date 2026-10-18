@@ -1,3 +1,4 @@
+import '../../../core/audience.dart';
 import '../../../core/content/content_l10n.dart';
 import '../../nutrition/data/nutrition_goals.dart';
 import '../../setup/setup_profile.dart';
@@ -38,12 +39,24 @@ NutritionRecommendation recommendFor(SetupProfile u) {
           has(TrainingType.hiit));
 
   Product pick(ProductCategory c) {
-    final list = products.where((p) => p.category == c).toList()
-      ..sort((a, b) {
-        final ga = a.goals.contains(u.goal) ? 0 : 1;
-        final gb = b.goals.contains(u.goal) ? 0 : 1;
-        return ga != gb ? ga - gb : b.rating.compareTo(a.rating);
-      });
+    // Faqat shu jinsga mos (yoki hamma uchun) mahsulotlar. Tartib: avval maqsadga mosligi
+    // (ozayotgan erkakka massa uchun oqsil tavsiya qilinmasin), keyin aynan shu jins
+    // uchun yaratilgani, keyin reyting.
+    final list =
+        products
+            .where(
+              (p) =>
+                  p.category == c && audienceFitsGender(p.audience, u.gender),
+            )
+            .toList()
+          ..sort((a, b) {
+            final ga = a.goals.contains(u.goal) ? 0 : 1;
+            final gb = b.goals.contains(u.goal) ? 0 : 1;
+            if (ga != gb) return ga - gb;
+            final sa = audienceIsSpecificTo(a.audience, u.gender) ? 0 : 1;
+            final sb = audienceIsSpecificTo(b.audience, u.gender) ? 0 : 1;
+            return sa != sb ? sa - sb : b.rating.compareTo(a.rating);
+          });
     return list.first;
   }
 
@@ -139,6 +152,10 @@ NutritionRecommendation recommendFor(SetupProfile u) {
   return NutritionRecommendation(
     targets: targets,
     supplements: picks,
-    plans: recommendPlans(targetKcal: targets.kcal, goal: u.goal),
+    plans: recommendPlans(
+      targetKcal: targets.kcal,
+      goal: u.goal,
+      gender: u.gender,
+    ),
   );
 }

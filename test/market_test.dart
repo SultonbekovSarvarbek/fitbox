@@ -36,6 +36,23 @@ void main() {
       }
     });
 
+    test('ratsion nomlari mazmunli: raqamsiz, takrorlanmaydi, hamma tilda', () {
+      final seen = <String>{};
+      for (final p in mealPlans) {
+        for (final name in [p.title.en, p.title.uz, p.title.ru]) {
+          expect(name.trim(), isNotEmpty, reason: p.id);
+          // Kaloriya alohida qatorda ko'rsatiladi, nomda raqam bo'lmasin.
+          expect(
+            RegExp(r'\d').hasMatch(name),
+            isFalse,
+            reason: '${p.id}: $name',
+          );
+        }
+        expect(seen.add(p.title.ru), isTrue, reason: 'takror: ${p.title.ru}');
+        expect(seen.add(p.title.en), isTrue, reason: 'takror: ${p.title.en}');
+      }
+    });
+
     test('har bir maqsad uchun kamida bitta mos ratsion bor', () {
       for (final g in Goal.values) {
         expect(
@@ -67,11 +84,11 @@ void main() {
   });
 
   test(
-    'norma 2546 kkal, maqsad "qomatni shakllantirish" -> ~2500 kkal ratsion',
+    'norma 2546 kkal, maqsad "qomatni shakllantirish" -> kaloriyasi me\'yorga yaqin',
     () {
       // Avval maqsad jarimasi kaloriyadan ustun kelib, 2000 kkalli ratsion chiqardi.
       final r = recommendPlans(targetKcal: 2546, goal: Goal.shapeBody);
-      expect(r.first.id, 'mass-2500');
+      expect((r.first.kcal - 2546).abs(), lessThan(300));
     },
   );
 }

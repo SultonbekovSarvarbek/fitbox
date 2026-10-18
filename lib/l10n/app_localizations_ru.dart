@@ -9,7 +9,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appName => 'FitBody';
+  String get appName => 'Forkout';
 
   @override
   String get next => 'Далее';
@@ -569,7 +569,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get supportGreeting =>
-      'Привет! 👋 Я ассистент FitBody. Спрашивайте о тренировках и питании.';
+      'Привет! 👋 Я ассистент Forkout. Спрашивайте о тренировках и питании.';
 
   @override
   String get supportAutoReply =>
@@ -1493,7 +1493,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get letsStart => 'Начнём!';
 
   @override
-  String get whyFitBody => 'Зачем FitBody';
+  String get whyForkout => 'Зачем Forkout';
 
   @override
   String get userGuide => 'Руководство';

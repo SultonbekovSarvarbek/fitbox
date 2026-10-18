@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/audience.dart';
 import '../../../core/content/content_l10n.dart';
 
 enum NewsCategory { nutrition, sport, supplements, recipes }
@@ -46,6 +47,7 @@ class NewsItem {
     required this.body,
     this.productId,
     this.toSubscription = false,
+    this.audience = Audience.everyone,
   });
 
   final String id;
@@ -65,13 +67,25 @@ class NewsItem {
 
   /// Ovqat obunasiga havola ko'rsatiladimi.
   final bool toSubscription;
+
+  /// Kimlar uchun: hammaga, erkaklarga yoki ayollarga.
+  final Audience audience;
 }
 
 NewsItem? newsById(String id) => news.where((n) => n.id == id).firstOrNull;
 
-/// Eng yangilari birinchi.
-List<NewsItem> newsSorted([NewsCategory? category]) =>
-    (news.where((n) => category == null || n.category == category).toList()
+/// Eng yangilari birinchi. [audience] berilsa — shu auditoriyaga mos (va hamma uchun) maqolalar.
+List<NewsItem> newsSorted([
+  NewsCategory? category,
+  AudienceFilter audience = AudienceFilter.all,
+]) =>
+    (news
+        .where(
+          (n) =>
+              (category == null || n.category == category) &&
+              audienceVisible(n.audience, audience),
+        )
+        .toList()
       ..sort((a, b) => b.date.compareTo(a.date)));
 
 /// Bosh yangilik: eng yangi "featured".
@@ -82,7 +96,11 @@ NewsItem get featuredNews => news.firstWhere(
 
 /// Shu kategoriyadagi boshqa maqolalar ("Yana o'qing").
 List<NewsItem> relatedNews(NewsItem item, {int take = 3}) =>
-    newsSorted(item.category).where((n) => n.id != item.id).take(take).toList();
+    newsSorted(item.category, switch (item.audience) {
+      Audience.everyone => AudienceFilter.all,
+      Audience.men => AudienceFilter.men,
+      Audience.women => AudienceFilter.women,
+    }).where((n) => n.id != item.id).take(take).toList();
 
 final news = <NewsItem>[
   // ---------------------------------------------------------------- Ovqatlanish
@@ -730,5 +748,286 @@ final news = <NewsItem>[
         'Подавайте со 100 г натурального йогурта и ягодами. Около 400–450 ккал и 20–25 г белка (приблизительные значения). Для большего количества белка добавьте в тесто мерную ложку протеина.',
       ),
     ],
+  ),
+  // ------------------------------------------------------------------ Ayollarga
+  NewsItem(
+    id: 'w-iron',
+    category: NewsCategory.nutrition,
+    date: DateTime(2026, 10, 17),
+    minutes: 4,
+    audience: Audience.women,
+    title: Tr(
+      'Iron and active women: what to know',
+      "Temir va faol ayollar: bilish kerak bo'lgan narsalar",
+      'Железо и активные женщины: что важно знать',
+    ),
+    summary: Tr(
+      'Low iron is common in women who train. How to eat for it, and why a blood test beats guessing.',
+      "Past temir mashq qiladigan ayollarda keng tarqalgan. Qanday ovqatlanish kerak va nega taxmindan ko'ra qon tahlili yaxshi.",
+      'Нехватка железа часто встречается у тренирующихся женщин. Как питаться и почему анализ крови лучше догадок.',
+    ),
+    body: [
+      Tr(
+        'Women of reproductive age lose iron every month, and hard training can raise the need further. Tiredness, shortness of breath, pale skin and hair loss can be signs, but they have many other causes too.',
+        "Tug'ish yoshidagi ayollar har oy temir yo'qotadi, jadal mashqlar esa ehtiyojni yanada oshirishi mumkin. Charchoq, nafas qisilishi, rangpar teri va soch to'kilishi belgi bo'lishi mumkin, ammo ularning boshqa sabablari ham ko'p.",
+        'Женщины репродуктивного возраста теряют железо каждый месяц, а интенсивные тренировки могут увеличивать потребность ещё сильнее. Усталость, одышка, бледность и выпадение волос могут быть признаками, но у них много и других причин.',
+      ),
+      Tr(
+        'Good food sources are red meat, liver, eggs, legumes and leafy greens. Iron from plants is absorbed better with vitamin C (peppers, tomatoes, lemon), and worse when you drink tea, coffee or milk with the meal.',
+        "Yaxshi manbalar: qizil go'sht, jigar, tuxum, dukkakli va bargli ko'katlar. O'simlik temiri C vitamini (qalampir, pomidor, limon) bilan yaxshi, ovqat bilan choy, qahva yoki sut ichilsa yomonroq so'riladi.",
+        'Хорошие источники — красное мясо, печень, яйца, бобовые и зелёные листовые овощи. Железо из растений лучше усваивается с витамином C (перец, помидоры, лимон) и хуже, если запивать еду чаем, кофе или молоком.',
+      ),
+      Tr(
+        'The right way to find out is a blood test (hemoglobin and ferritin). Take iron supplements only if a doctor advises it: too much iron is harmful.',
+        "Bilishning to'g'ri yo'li — qon tahlili (gemoglobin va ferritin). Temir qo'shimchalarini faqat shifokor maslahat bergandagina qabul qiling: temir ortiqcha bo'lsa zararli.",
+        'Узнать это правильно можно по анализу крови (гемоглобин и ферритин). Принимайте препараты железа только по совету врача: избыток железа вреден.',
+      ),
+    ],
+    productId: 'w-iron',
+  ),
+  NewsItem(
+    id: 'w-strength-myth',
+    category: NewsCategory.sport,
+    date: DateTime(2026, 10, 17),
+    minutes: 4,
+    audience: Audience.women,
+    title: Tr(
+      'Strength training for women: you will not get bulky',
+      "Ayollar uchun kuch mashqlari: siz qo'pol bo'lib ketmaysiz",
+      'Силовые для женщин: «накачаться» вы не рискуете',
+    ),
+    summary: Tr(
+      'Lifting makes you stronger, firmer and healthier. Why the fear of bulking up is mostly a myth.',
+      "Og'irlik ko'tarish sizni kuchliroq, tarangroq va sog'lomroq qiladi. Nega «shishib ketish» qo'rquvi asosan afsona.",
+      'Силовые делают вас сильнее, подтянутее и здоровее. Почему страх «накачаться» — в основном миф.',
+    ),
+    body: [
+      Tr(
+        'Women have much lower testosterone than men, so building a lot of muscle is slow and takes years of focused training and eating. In practice strength work gives a firmer, more toned look rather than a bulky one.',
+        "Ayollarda testosteron erkaklarnikidan ancha kam, shuning uchun ko'p mushak qurish sekin va yillar davomida maqsadli mashq va ovqatlanishni talab qiladi. Amalda kuch mashqlari qo'pol emas, tarang va shakllangan ko'rinish beradi.",
+        'У женщин тестостерона гораздо меньше, чем у мужчин, поэтому набрать много мышц медленно и требует лет целенаправленных тренировок и питания. На практике силовые дают более подтянутый, а не «накачанный» вид.',
+      ),
+      Tr(
+        'The benefits go beyond looks: stronger bones, which matters later in life, better joint support, more energy and an easier time keeping weight stable. Train 2–3 times a week and use weights that feel challenging in the last two repetitions.',
+        "Foyda tashqi ko'rinishdan ham ko'p: suyaklar mustahkamroq (bu keyingi hayotda muhim), bo'g'imlar yaxshiroq qo'llab-quvvatlanadi, energiya ko'proq va vaznni barqaror ushlash osonroq. Haftasiga 2–3 marta mashq qiling va oxirgi ikki takrorda qiyin tuyuladigan og'irlikni ishlating.",
+        'Польза не только во внешнем виде: крепче кости, что важно в более зрелом возрасте, лучше поддержка суставов, больше энергии и проще удерживать вес. Занимайтесь 2–3 раза в неделю и берите вес, при котором последние два повторения даются непросто.',
+      ),
+      Tr(
+        'Eat enough protein, about 1.4–2.0 g per kg of body weight if you train regularly, and do not judge progress by the scale alone: weight may stay the same while your shape changes.',
+        "Yetarli oqsil iste'mol qiling: muntazam mashq qilsangiz tana vazniga taxminan 1,4–2,0 g/kg, va o'sishni faqat tarozi bilan baholamang: shakl o'zgarganda vazn o'sha-o'sha qolishi mumkin.",
+        'Ешьте достаточно белка, около 1,4–2,0 г на кг веса при регулярных тренировках, и не оценивайте прогресс только по весам: вес может не меняться, пока меняется фигура.',
+      ),
+    ],
+    productId: 'w-whey-lite',
+  ),
+  NewsItem(
+    id: 'w-cycle',
+    category: NewsCategory.sport,
+    date: DateTime(2026, 10, 11),
+    minutes: 4,
+    audience: Audience.women,
+    title: Tr(
+      'Training and the menstrual cycle: listen to your body',
+      "Mashg'ulot va hayz davri: tanangizni tinglang",
+      'Тренировки и менструальный цикл: прислушивайтесь к себе',
+    ),
+    summary: Tr(
+      'Most women can train normally in every phase. How to adjust by how you feel, and when to see a doctor.',
+      "Ko'pchilik ayollar har bir bosqichda odatdagidek mashq qila oladi. O'zingizni his qilishingizga qarab qanday moslashtirish va qachon shifokorga borish kerak.",
+      'Большинство женщин могут нормально тренироваться в любой фазе. Как подстраиваться под самочувствие и когда идти к врачу.',
+    ),
+    body: [
+      Tr(
+        'Research on the cycle and performance is mixed and very individual. Some women feel stronger in the days after their period and more tired just before or during it; many notice no difference at all. There is no need to change your plan by the calendar.',
+        "Hayz davri va ish qobiliyati bo'yicha tadqiqotlar turlicha va juda individual. Ba'zi ayollar hayzdan keyingi kunlarda kuchliroq, hayz oldidan yoki paytida esa charchoqroq his qiladi; ko'pchilik hech qanday farq sezmaydi. Rejani kalendar bo'yicha o'zgartirish shart emas.",
+        'Исследования о цикле и результатах противоречивы и очень индивидуальны. Одни чувствуют себя сильнее в дни после менструации и устают перед ней или во время неё, многие не замечают разницы. Менять план по календарю не нужно.',
+      ),
+      Tr(
+        'Track your energy and mood for two or three cycles and adjust by feel: on heavy days do a lighter session or a walk instead of skipping everything. Gentle movement often eases cramps. Eat enough iron-rich food.',
+        "Ikki-uch davr davomida energiya va kayfiyatingizni kuzating va his-tuyg'uga qarab moslashtiring: og'ir kunlarda hammasini o'tkazib yubormasdan yengilroq mashq yoki sayr qiling. Yengil harakat ko'pincha og'riqni kamaytiradi. Temirga boy ovqatni yetarli yeng.",
+        'Отслеживайте энергию и настроение в течение двух-трёх циклов и подстраивайтесь по самочувствию: в тяжёлые дни сделайте более лёгкую тренировку или прогулку вместо полного пропуска. Мягкое движение часто облегчает спазмы. Ешьте достаточно продуктов с железом.',
+      ),
+      Tr(
+        'See a doctor if periods are very painful or heavy, become irregular, or stop. Missing periods in women who train a lot can be a sign that you are not eating enough for your activity.',
+        "Agar hayz juda og'riqli yoki ko'p bo'lsa, tartibsiz bo'lib qolsa yoki to'xtasa, shifokorga boring. Ko'p mashq qiladigan ayollarda hayzning to'xtashi faollikka yetarli ovqat yemayotganingiz belgisi bo'lishi mumkin.",
+        'Обратитесь к врачу, если менструации очень болезненные или обильные, стали нерегулярными или прекратились. Отсутствие менструаций у много тренирующихся женщин может говорить о том, что вы едите слишком мало для своей нагрузки.',
+      ),
+    ],
+  ),
+  NewsItem(
+    id: 'w-bones',
+    category: NewsCategory.nutrition,
+    date: DateTime(2026, 10, 2),
+    minutes: 4,
+    audience: Audience.women,
+    title: Tr(
+      'Calcium, vitamin D and strong bones',
+      "Kaltsiy, D vitamini va mustahkam suyaklar",
+      'Кальций, витамин D и крепкие кости',
+    ),
+    summary: Tr(
+      'Bone mass peaks around 30. What helps to keep your bones strong for decades.',
+      "Suyak massasi 30 yoshda eng yuqori bo'ladi. Suyaklaringizni o'nlab yillar mustahkam saqlashga nima yordam beradi.",
+      'Костная масса достигает пика около 30 лет. Что помогает сохранить кости крепкими на десятилетия.',
+    ),
+    body: [
+      Tr(
+        'Bone mass peaks around the late twenties and then slowly declines, faster after menopause. Adults need about 1000 mg of calcium a day, and women over 50 about 1200 mg. Food is the best source: a glass of milk gives about 300 mg, and yogurt, cheese, cottage cheese and sardines with bones are good too.',
+        "Suyak massasi yigirma yoshlarning oxirida eng yuqori bo'ladi, keyin sekin kamayadi, menopauzadan keyin tezroq. Kattalarga kuniga taxminan 1000 mg kaltsiy kerak, 50 dan oshgan ayollarga taxminan 1200 mg. Eng yaxshi manba — ovqat: bir stakan sut taxminan 300 mg beradi, yogurt, pishloq, tvorog va suyagi bilan sardina ham yaxshi.",
+        'Костная масса достигает пика ближе к концу третьего десятка, затем медленно снижается, быстрее после менопаузы. Взрослым нужно около 1000 мг кальция в день, женщинам старше 50 лет — около 1200 мг. Лучший источник — еда: стакан молока даёт около 300 мг, хороши также йогурт, сыр, творог и сардины с косточками.',
+      ),
+      Tr(
+        'Vitamin D helps you absorb calcium. Many people are low in winter, so the sensible step is a blood test and a doctor’s advice on whether a supplement is needed. Do not take large doses of calcium or vitamin D on your own.',
+        "D vitamini kaltsiyning so'rilishiga yordam beradi. Ko'pchilikda qishda uning miqdori past bo'ladi, shuning uchun to'g'ri qadam — qon tahlili va qo'shimcha kerakligi bo'yicha shifokor maslahati. Kaltsiy yoki D vitaminini o'zboshimchalik bilan katta dozada qabul qilmang.",
+        'Витамин D помогает усваивать кальций. Зимой его уровень часто снижен, поэтому разумный шаг — сдать анализ и узнать у врача, нужна ли добавка. Не принимайте большие дозы кальция или витамина D самостоятельно.',
+      ),
+      Tr(
+        'Movement builds bone too. Strength training and weight-bearing exercise such as walking, running and dancing signal your bones to stay strong.',
+        "Harakat suyakni ham mustahkamlaydi. Kuch mashqlari va og'irlikni ko'taradigan mashqlar, masalan yurish, yugurish va raqs suyaklarga mustahkam bo'lib qolish signalini beradi.",
+        'Движение тоже укрепляет кости. Силовые тренировки и нагрузка собственным весом, такие как ходьба, бег и танцы, сигнализируют костям оставаться крепкими.',
+      ),
+    ],
+    productId: 'w-multi',
+  ),
+  // ---------------------------------------------------------------- Erkaklarga
+  NewsItem(
+    id: 'm-hard-gainer',
+    category: NewsCategory.nutrition,
+    date: DateTime(2026, 10, 17),
+    minutes: 4,
+    audience: Audience.men,
+    title: Tr(
+      'Can’t gain weight? How to add mass steadily',
+      "Vazn ola olmayapsizmi? Massani barqaror qanday oshirish kerak",
+      'Не получается набрать вес? Как добавлять массу стабильно',
+    ),
+    summary: Tr(
+      'A small calorie surplus, enough protein and patience beat eating everything in sight.',
+      "Kichik kaloriya ortiqchaligi, yetarli oqsil va sabr — ko'zga tushganning hammasini yeyishdan yaxshi.",
+      'Небольшой профицит калорий, достаточно белка и терпение работают лучше, чем «есть всё подряд».',
+    ),
+    body: [
+      Tr(
+        'Aim for a surplus of 250–500 kcal a day above what you burn, which means gaining roughly 0.25–0.5 kg a week. Faster gain is mostly fat. Weigh yourself once a week in the same conditions, and if the weight does not move for 2–3 weeks add about 200 kcal.',
+        "Yoqayotganingizdan kuniga 250–500 kkal ortiq iste'mol qilishni maqsad qiling, bu haftasiga taxminan 0,25–0,5 kg qo'shilishini bildiradi. Tezroq o'sish asosan yog'. Haftada bir marta bir xil sharoitda tortiling va vazn 2–3 hafta o'zgarmasa, taxminan 200 kkal qo'shing.",
+        'Стремитесь к профициту 250–500 ккал в день сверх того, что вы тратите, — это примерно 0,25–0,5 кг в неделю. Более быстрый набор — в основном жир. Взвешивайтесь раз в неделю в одинаковых условиях, и если вес не меняется 2–3 недели, добавьте около 200 ккал.',
+      ),
+      Tr(
+        'Eat 4–5 times a day, with 1.6–2.0 g of protein per kg of body weight. Calorie-dense foods help when appetite is low: nuts, olive oil, dried fruit, whole milk, rice and potatoes. A shake is an easy way to add calories without feeling stuffed.',
+        "Kuniga 4–5 marta ovqatlaning, tana vazniga 1,6–2,0 g/kg oqsil bilan. Ishtaha past bo'lganda kaloriyaga boy mahsulotlar yordam beradi: yong'oq, zaytun moyi, quruq meva, to'liq sut, guruch va kartoshka. Kokteyl to'yib ketmasdan kaloriya qo'shishning oson yo'li.",
+        'Ешьте 4–5 раз в день, с 1,6–2,0 г белка на кг веса. Калорийные продукты помогают при плохом аппетите: орехи, оливковое масло, сухофрукты, цельное молоко, рис и картофель. Коктейль — простой способ добавить калории, не чувствуя тяжести.',
+      ),
+      Tr(
+        'Food only builds muscle if you train: lift 3–4 times a week, sleep 7–9 hours and be patient. Our high-calorie meal programs are calculated for exactly this goal.',
+        "Ovqat faqat mashq qilsangiz mushak quradi: haftasiga 3–4 marta og'irlik ko'taring, 7–9 soat uxlang va sabr qiling. Bizning yuqori kaloriyali ovqat ratsionlarimiz aynan shu maqsad uchun hisoblangan.",
+        'Еда строит мышцы, только если вы тренируетесь: поднимайте вес 3–4 раза в неделю, спите 7–9 часов и будьте терпеливы. Наши высококалорийные программы питания рассчитаны именно на эту цель.',
+      ),
+    ],
+    productId: 'm-whey-power',
+    toSubscription: true,
+  ),
+  NewsItem(
+    id: 'm-muscle-35',
+    category: NewsCategory.sport,
+    date: DateTime(2026, 10, 14),
+    minutes: 4,
+    audience: Audience.men,
+    title: Tr(
+      'Men over 35: keeping muscle and energy',
+      "35 yoshdan oshgan erkaklar: mushak va energiyani saqlash",
+      'Мужчинам после 35: как сохранить мышцы и энергию',
+    ),
+    summary: Tr(
+      'Muscle slowly declines with age unless you train it. A simple plan that respects recovery.',
+      "Mashq qilmasangiz mushaklar yosh bilan sekin kamayadi. Tiklanishni hisobga oladigan oddiy reja.",
+      'С возрастом мышцы медленно теряются, если их не тренировать. Простой план, который учитывает восстановление.',
+    ),
+    body: [
+      Tr(
+        'From about 30 people gradually lose muscle, a few percent per decade, unless they train it. Strength training 2–3 times a week and enough protein, about 1.6–2.0 g per kg spread over the day, are the most effective answer.',
+        "Taxminan 30 yoshdan boshlab odamlar mashq qilmasa, har o'n yillikda bir necha foiz mushak yo'qotadi. Haftasiga 2–3 marta kuch mashqlari va yetarli oqsil, kun bo'yi taqsimlangan taxminan 1,6–2,0 g/kg — eng samarali javob.",
+        'Примерно с 30 лет люди постепенно теряют мышцы, на несколько процентов за десятилетие, если их не тренируют. Самый эффективный ответ — силовые 2–3 раза в неделю и достаточно белка, около 1,6–2,0 г на кг, распределённых по дню.',
+      ),
+      Tr(
+        'Recovery takes longer with age, so cut volume rather than consistency. Warm up for longer, choose exercise variations your joints tolerate, and keep mobility work in the plan. Sleep 7–9 hours.',
+        "Yosh bilan tiklanish uzoqroq davom etadi, shuning uchun muntazamlikni emas, hajmni kamaytiring. Uzoqroq qizining, bo'g'imlaringiz ko'taradigan mashq variantlarini tanlang va harakatchanlik mashqlarini rejada saqlang. 7–9 soat uxlang.",
+        'С возрастом восстановление идёт дольше, поэтому сокращайте объём, а не регулярность. Разминайтесь дольше, выбирайте варианты упражнений, которые переносят суставы, и оставьте в плане работу над подвижностью. Спите 7–9 часов.',
+      ),
+      Tr(
+        'Add 150 minutes of brisk walking, cycling or other cardio a week for the heart, and have regular health check-ups.',
+        "Yurak uchun haftasiga 150 daqiqa tez yurish, velosiped yoki boshqa kardio qo'shing va muntazam tibbiy ko'rikdan o'ting.",
+        'Добавьте 150 минут в неделю быстрой ходьбы, велосипеда или другого кардио для сердца и регулярно проходите профилактические осмотры.',
+      ),
+    ],
+    productId: 'creatine',
+  ),
+  NewsItem(
+    id: 'm-heart',
+    category: NewsCategory.nutrition,
+    date: DateTime(2026, 10, 9),
+    minutes: 4,
+    audience: Audience.men,
+    title: Tr(
+      'Heart health for men: numbers worth knowing',
+      "Erkaklar yuragi salomatligi: bilishga arziydigan raqamlar",
+      'Здоровье сердца у мужчин: цифры, которые стоит знать',
+    ),
+    summary: Tr(
+      'Blood pressure, cholesterol, blood sugar and waist size. Simple checks and food habits that matter.',
+      "Qon bosimi, xolesterin, qon shakari va bel o'lchami. Muhim bo'lgan oddiy tekshiruvlar va ovqatlanish odatlari.",
+      'Давление, холестерин, сахар крови и обхват талии. Простые проверки и пищевые привычки, которые важны.',
+    ),
+    body: [
+      Tr(
+        'Know four numbers: blood pressure, cholesterol (especially LDL), blood sugar and waist circumference. Repeated readings of 140/90 or higher are considered high blood pressure, and a waist above about 94 cm is worth attention. Ask your doctor what is right for you.',
+        "To'rtta raqamni biling: qon bosimi, xolesterin (ayniqsa LDL), qon shakari va bel aylanasi. 140/90 va undan yuqori takroriy ko'rsatkichlar yuqori qon bosimi hisoblanadi, 94 sm dan oshgan bel e'tiborga loyiq. Sizga nima to'g'riligini shifokordan so'rang.",
+        'Знайте четыре цифры: давление, холестерин (особенно ЛПНП), сахар крови и обхват талии. Повторные показатели 140/90 и выше считаются повышенным давлением, а талия более примерно 94 см заслуживает внимания. Спросите врача, что подходит именно вам.',
+      ),
+      Tr(
+        'Food habits that help: less salt (under 5 g a day), more vegetables, legumes and whole grains, fish twice a week, less processed meat and sugary drinks. Do not smoke, and aim for 150 minutes of activity a week.',
+        "Yordam beradigan ovqatlanish odatlari: tuz kamroq (kuniga 5 g dan kam), sabzavot, dukkakli va to'liq donlar ko'proq, haftada ikki marta baliq, qayta ishlangan go'sht va shirin ichimliklar kamroq. Chekmang va haftasiga 150 daqiqa faollikka intiling.",
+        'Полезные пищевые привычки: меньше соли (до 5 г в день), больше овощей, бобовых и цельных злаков, рыба два раза в неделю, меньше переработанного мяса и сладких напитков. Не курите и стремитесь к 150 минутам активности в неделю.',
+      ),
+      Tr(
+        'From about 35–40 a yearly check-up with blood tests is a good habit, even when you feel fine. Heart problems often develop quietly.',
+        "Taxminan 35–40 yoshdan boshlab yiliga bir marta qon tahlillari bilan tibbiy ko'rikdan o'tish, o'zingizni yaxshi his qilsangiz ham, yaxshi odat. Yurak muammolari ko'pincha jimgina rivojlanadi.",
+        'Примерно с 35–40 лет ежегодный осмотр с анализами крови — хорошая привычка, даже если вы чувствуете себя хорошо. Проблемы с сердцем часто развиваются незаметно.',
+      ),
+    ],
+  ),
+  NewsItem(
+    id: 'm-testosterone',
+    category: NewsCategory.supplements,
+    date: DateTime(2026, 9, 27),
+    minutes: 4,
+    audience: Audience.men,
+    title: Tr(
+      'Testosterone: what food and supplements can and cannot do',
+      "Testosteron: ovqat va qo'shimchalar nima qila oladi va nima qila olmaydi",
+      'Тестостерон: что могут и чего не могут еда и добавки',
+    ),
+    summary: Tr(
+      'Lifestyle supports healthy levels. “Boosters” mostly do not deliver, and symptoms deserve a doctor.',
+      "Turmush tarzi sog'lom darajani qo'llab-quvvatlaydi. «Boosterlar» ko'pincha va'dasini bajarmaydi, belgilar esa shifokorga ko'rsatilishi kerak.",
+      'Образ жизни поддерживает здоровый уровень. «Бустеры» в основном не работают, а симптомы стоит показать врачу.',
+    ),
+    body: [
+      Tr(
+        'Testosterone declines slowly with age, roughly 1% a year after 30–40. What supports healthy levels is ordinary: 7–9 hours of sleep, strength training, a healthy body weight, enough protein and fat, limiting alcohol and managing stress.',
+        "Testosteron yosh bilan sekin kamayadi, 30–40 yoshdan keyin yiliga taxminan 1%. Sog'lom darajani qo'llab-quvvatlaydigan narsalar oddiy: 7–9 soat uyqu, kuch mashqlari, sog'lom tana vazni, yetarli oqsil va yog', spirtli ichimlikni cheklash va stressni boshqarish.",
+        'Тестостерон медленно снижается с возрастом, примерно на 1% в год после 30–40 лет. Поддерживает здоровый уровень самое обычное: сон 7–9 часов, силовые тренировки, здоровый вес, достаточно белка и жиров, ограничение алкоголя и управление стрессом.',
+      ),
+      Tr(
+        'Most “testosterone booster” supplements have little evidence behind them. Zinc and magnesium help only if you are actually low. Be careful with products that promise big results: some contain undeclared ingredients.',
+        "Ko'pchilik «testosteron booster» qo'shimchalarining isbotlangan samarasi kam. Rux va magniy faqat haqiqatan yetishmasa yordam beradi. Katta natija va'da qiladigan mahsulotlardan ehtiyot bo'ling: ba'zilarida e'lon qilinmagan tarkibiy qismlar bo'ladi.",
+        'У большинства добавок-«бустеров тестостерона» мало доказательств эффективности. Цинк и магний помогают, только если их действительно не хватает. Осторожнее с продуктами, обещающими громкий результат: в некоторых есть незаявленные компоненты.',
+      ),
+      Tr(
+        'If you feel tired, have low drive or low mood for months, do not self-treat: see a doctor for a blood test and a proper diagnosis.',
+        "Agar bir necha oy davomida charchoq, istak pasayishi yoki past kayfiyatni his qilsangiz, o'zingizni davolamang: qon tahlili va to'g'ri tashxis uchun shifokorga boring.",
+        'Если вы несколько месяцев чувствуете усталость, снижение влечения или плохое настроение, не лечитесь самостоятельно: обратитесь к врачу за анализом крови и правильным диагнозом.',
+      ),
+    ],
+    productId: 'm-zma',
   ),
 ];
